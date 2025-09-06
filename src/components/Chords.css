@@ -1,0 +1,66 @@
+.chords-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 2rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.chords-container h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.chord-table-container {
+  background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow-x: auto;
+}
+
+.chord-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.chord-table thead {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chord-table th,
+.chord-table td {
+  padding: 1rem;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chord-table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  background: rgba(103, 126, 234, 0.3);
+}
+
+.chord-table tbody th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 500;
+}
+
+.chord-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chord-table tbody td {
+  font-family: 'Courier New', monospace;
+}
+
+.chord-table .scale-degree {
+  text-align: center;
+}
