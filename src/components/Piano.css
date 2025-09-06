@@ -35,7 +35,7 @@
 
 .keyboard {
   display: flex;
-  height: 10rem;
+  height: 15rem;
   align-items: flex-start;
   justify-content: center;
   background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
