@@ -8,7 +8,7 @@ function Chords() {
         <table className="chord-table">
           <thead>
             <tr>
-              <th>Chord</th>
+              <th>Triad</th>
               <th className="scale-degree">1</th>
               <th className="scale-degree">2</th>
               <th className="scale-degree">3</th>
@@ -16,13 +16,13 @@ function Chords() {
               <th className="scale-degree">5</th>
               <th className="scale-degree">6</th>
               <th className="scale-degree">7</th>
-              <th>Name</th>
+              <th>Example</th>
               <th>Shorthand</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th>Major Triad</th>
+              <th>Major</th>
               <td className="scale-degree">1</td>
               <td></td>
               <td className="scale-degree">3</td>
@@ -34,7 +34,7 @@ function Chords() {
               <td>C</td>
             </tr>
             <tr>
-              <th>Minor Triad</th>
+              <th>Minor</th>
               <td className="scale-degree">1</td>
               <td></td>
               <td className="scale-degree">♭3</td>
@@ -46,7 +46,7 @@ function Chords() {
               <td>Cm</td>
             </tr>
             <tr>
-              <th>Diminished Triad</th>
+              <th>Diminished</th>
               <td className="scale-degree">1</td>
               <td></td>
               <td className="scale-degree">♭3</td>
@@ -58,7 +58,7 @@ function Chords() {
               <td>C°</td>
             </tr>
             <tr>
-              <th>Augmented Triad</th>
+              <th>Augmented</th>
               <td className="scale-degree">1</td>
               <td></td>
               <td className="scale-degree">3</td>
@@ -68,6 +68,18 @@ function Chords() {
               <td></td>
               <td>C Augmented</td>
               <td>C+</td>
+            </tr>
+            <tr className="section-header">
+              <th>Seventh Chord</th>
+              <th className="scale-degree">1</th>
+              <th className="scale-degree">2</th>
+              <th className="scale-degree">3</th>
+              <th className="scale-degree">4</th>
+              <th className="scale-degree">5</th>
+              <th className="scale-degree">6</th>
+              <th className="scale-degree">7</th>
+              <th>Example</th>
+              <th>Shorthand</th>
             </tr>
             <tr>
               <th>Major 7</th>
@@ -115,7 +127,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">♭7</td>
               <td>C Half-Diminished 7</td>
-              <td>Cø7</td>
+              <td>
+                C<sup>ø</sup>7
+              </td>
             </tr>
             <tr>
               <th>Fully-Diminished 7</th>
@@ -125,7 +139,7 @@ function Chords() {
               <td></td>
               <td className="scale-degree">♭5</td>
               <td></td>
-              <td className="scale-degree">♭♭7</td>
+              <td className="scale-degree">𝄫7</td>
               <td>C Fully-Diminished 7</td>
               <td>C°7</td>
             </tr>
