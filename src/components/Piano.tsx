@@ -192,8 +192,10 @@ const Piano = () => {
   return (
     <div className="piano-container">
       <div className="controls">
-        <button onClick={clearMarks}>Clear Marks</button>
         <span className="info">Click to play • Ctrl-click to mark/unmark</span>
+        <button onClick={clearMarks} disabled={markedKeys.size == 0}>
+          Clear Marks
+        </button>
       </div>
       <div className="keyboard">
         {[2, 3, 4, 5].map((octave) => (
