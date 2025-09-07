@@ -8,7 +8,7 @@
 }
 
 .controls {
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   display: flex;
   gap: 2rem;
   align-items: center;

@@ -120,7 +120,7 @@ const Piano = () => {
   } | null>(null);
   const [markedKeys, setMarkedKeys] = useState<Set<string>>(new Set());
   const [audioContext] = useState(
-    () => new (window.AudioContext || (window as any).webkitAudioContext)()
+    () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
   );
 
   const getFrequency = useCallback((note: string, octave: number): number => {
