@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import Intervals from './Intervals';
 import './Piano.css';
 
 interface KeyProps {
@@ -217,6 +218,7 @@ const Piano = () => {
           endNote="C"
         />
       </div>
+      <Intervals />
     </div>
   );
 };

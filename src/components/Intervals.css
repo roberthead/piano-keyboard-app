@@ -1,0 +1,107 @@
+.intervals-container {
+  background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-top: 2rem;
+  /* 29 white keys * 2.5rem + 2rem padding on each side */
+  width: calc(29 * 2.5rem + 2rem);
+  max-width: calc(29 * 2.5rem + 2rem);
+  box-sizing: border-box;
+  transition: padding 0.3s ease;
+}
+
+.intervals-container.collapsed {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.intervals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 1.5rem;
+}
+
+.intervals-container.collapsed .intervals-header {
+  margin-bottom: 0;
+}
+
+.intervals-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.3rem;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.collapse-toggle {
+  background: transparent;
+  border: none;
+  color: #667eea;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+.intervals-container.collapsed .collapse-toggle {
+  transform: rotate(0deg);
+}
+
+.collapse-toggle:hover {
+  transform: rotate(90deg) scale(1.2);
+}
+
+.intervals-container.collapsed .collapse-toggle:hover {
+  transform: rotate(0deg) scale(1.2);
+}
+
+.intervals-svg {
+  display: block;
+}
+
+.interval-label {
+  fill: #667eea;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.interval-line {
+  stroke: #764ba2;
+  stroke-linecap: round;
+}
+
+.interval-dot {
+  fill: #667eea;
+}
+
+.interval-name {
+  fill: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.intervals-viewport {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.intervals-svg-container {
+  cursor: grab;
+  transition: transform 0.1s ease-out;
+  user-select: none;
+  width: fit-content;
+}
+
+.intervals-svg-container.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.intervals-svg-container svg {
+  display: block;
+}
