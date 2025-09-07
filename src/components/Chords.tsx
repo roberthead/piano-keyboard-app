@@ -166,7 +166,7 @@ function Chords() {
               </td>
             </tr>
             <tr className="section-header">
-              <th>Sus Chord</th>
+              <th>Suspended Chord</th>
               <th className="scale-degree">1</th>
               <th className="scale-degree">2</th>
               <th className="scale-degree">3</th>
@@ -214,9 +214,63 @@ function Chords() {
               <td className="scale-degree">5</td>
               <td></td>
               <td className="scale-degree">♭7</td>
-              <td>C 7Sus4</td>
+              <td>C7 Sus4</td>
               <td>
                 C<sup>7sus4</sup>
+              </td>
+            </tr>
+            <tr className="section-header">
+              <th>Add Chord</th>
+              <th className="scale-degree">1</th>
+              <th className="scale-degree">2</th>
+              <th className="scale-degree">3</th>
+              <th className="scale-degree">4</th>
+              <th className="scale-degree">5</th>
+              <th className="scale-degree">6</th>
+              <th className="scale-degree">7</th>
+              <th>Example</th>
+              <th>Shorthand</th>
+            </tr>
+            <tr>
+              <th>Add2 / Add9</th>
+              <td className="scale-degree">1</td>
+              <td className="scale-degree">2</td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td></td>
+              <td>C Add2 / C Add9</td>
+              <td>
+                C<sup>add2</sup> / C<sup>add9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Add4</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td className="scale-degree">4</td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td></td>
+              <td>C Add4</td>
+              <td>
+                C<sup>add4</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Add6</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td className="scale-degree">6</td>
+              <td></td>
+              <td>C Add6</td>
+              <td>
+                C<sup>6</sup>
               </td>
             </tr>
           </tbody>
