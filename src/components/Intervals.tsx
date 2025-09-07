@@ -22,28 +22,29 @@ const intervals = [
 ];
 
 function Intervals() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [startDragX, setStartDragX] = useState(0);
   const svgContainerRef = useRef<HTMLDivElement>(null);
-  
+
   // Calculate average spacing based on keyboard dimensions
   // 7 white keys per octave = 12 semitones
   // Each white key is 2.5rem (40px)
   const whiteKeyWidth = 40;
   const whiteKeysPerOctave = 7;
   const semitonesPerOctave = 12;
-  
+
   // Average distance per semitone
-  const pixelsPerSemitone = (whiteKeysPerOctave * whiteKeyWidth) / semitonesPerOctave;
-  
+  const pixelsPerSemitone =
+    (whiteKeysPerOctave * whiteKeyWidth) / semitonesPerOctave;
+
   const lineHeight = 25;
   const startX = 60;
   const startY = 20;
   // Make SVG wider to ensure it's draggable
-  const svgWidth = Math.max(1400, (16 * pixelsPerSemitone) + startX + 150);
-  
+  const svgWidth = Math.max(1400, 16 * pixelsPerSemitone + startX + 150);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -53,7 +54,7 @@ function Intervals() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
-      
+
       const newOffset = e.clientX - startDragX;
       setDragOffset(newOffset);
     };
@@ -61,56 +62,60 @@ function Intervals() {
     const handleMouseUp = () => {
       setIsDragging(false);
     };
-    
+
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = 'grabbing';
-      
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "grabbing";
+
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.body.style.cursor = '';
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.body.style.cursor = "";
       };
     }
   }, [isDragging, startDragX]);
 
   return (
-    <div className={`intervals-container ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="intervals-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+    <div className={`intervals-container ${isCollapsed ? "collapsed" : ""}`}>
+      <div
+        className="intervals-header"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
         <h3>Musical Intervals</h3>
-        <button className="collapse-toggle">
-          {isCollapsed ? '❯' : '❯'}
-        </button>
+        <button className="collapse-toggle">{isCollapsed ? "❯" : "❯"}</button>
       </div>
       {!isCollapsed && (
         <div className="intervals-viewport">
-          <div 
+          <div
             ref={svgContainerRef}
-            className={`intervals-svg-container ${isDragging ? 'dragging' : ''}`}
+            className={`intervals-svg-container ${
+              isDragging ? "dragging" : ""
+            }`}
             style={{ transform: `translateX(${dragOffset}px)` }}
             onMouseDown={handleMouseDown}
           >
-            <svg 
-              width={svgWidth} 
+            <svg
+              width={svgWidth}
               height={intervals.length * lineHeight + 40}
               className="intervals-svg"
             >
               {intervals.map((interval, index) => {
                 const y = startY + index * lineHeight;
-                const lineLength = startX + (interval.semitones * pixelsPerSemitone);
-                
+                const lineLength =
+                  startX + interval.semitones * pixelsPerSemitone;
+
                 return (
                   <g key={interval.semitones}>
-                    <text 
-                      x={10} 
-                      y={y + 5} 
+                    <text
+                      x={10}
+                      y={y + 5}
                       className="interval-label"
                       textAnchor="start"
                     >
                       {interval.label}
                     </text>
-                    <line 
+                    <line
                       x1={startX}
                       y1={y}
                       x2={lineLength}
@@ -118,15 +123,15 @@ function Intervals() {
                       className="interval-line"
                       strokeWidth="2"
                     />
-                    <circle 
+                    <circle
                       cx={lineLength}
                       cy={y}
                       r="4"
                       className="interval-dot"
                     />
-                    <text 
-                      x={lineLength + 10} 
-                      y={y + 5} 
+                    <text
+                      x={lineLength + 10}
+                      y={y + 5}
                       className="interval-name"
                       textAnchor="start"
                     >
