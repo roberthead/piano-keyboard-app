@@ -91,7 +91,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">7</td>
               <td>C Major 7</td>
-              <td>Cmaj7</td>
+              <td>
+                C<sup>maj7</sup>
+              </td>
             </tr>
             <tr>
               <th>Dominant 7</th>
@@ -103,7 +105,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">♭7</td>
               <td>C Dominant 7</td>
-              <td>C7</td>
+              <td>
+                C<sup>7</sup>
+              </td>
             </tr>
             <tr>
               <th>Minor 7</th>
@@ -115,7 +119,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">♭7</td>
               <td>C Minor 7</td>
-              <td>Cm7</td>
+              <td>
+                Cm<sup>7</sup>
+              </td>
             </tr>
             <tr>
               <th>Half-Diminished 7</th>
@@ -128,7 +134,7 @@ function Chords() {
               <td className="scale-degree">♭7</td>
               <td>C Half-Diminished 7</td>
               <td>
-                C<sup>ø</sup>7
+                C<sup>ø7</sup>
               </td>
             </tr>
             <tr>
@@ -141,7 +147,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">𝄫7</td>
               <td>C Fully-Diminished 7</td>
-              <td>C°7</td>
+              <td>
+                C°<sup>7</sup>
+              </td>
             </tr>
             <tr>
               <th>Minor-Major 7</th>
@@ -153,7 +161,9 @@ function Chords() {
               <td></td>
               <td className="scale-degree">7</td>
               <td>C Minor-Major 7</td>
-              <td>Cm(maj7)</td>
+              <td>
+                Cm<sup>maj7</sup>
+              </td>
             </tr>
           </tbody>
         </table>
