@@ -168,24 +168,41 @@ function Chords() {
               <th>Example</th>
               <th>Shorthand</th>
             </tr>
-            <tr>
-              <th>Add2 / Add9</th>
-              <td className="scale-degree">1</td>
-              <td className="scale-degree">2</td>
-              <td className="scale-degree">3</td>
-              <td></td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td></td>
-              {extensionLevel >= 2 && <td></td>}
-              {extensionLevel >= 2 && <td></td>}
-              {extensionLevel >= 3 && <td></td>}
-              {extensionLevel >= 3 && <td></td>}
-              <td>C Add2 / C Add9</td>
-              <td>
-                C<sup>add2</sup> / C<sup>add9</sup>
-              </td>
-            </tr>
+            {extensionLevel < 2 ? (
+              <tr>
+                <th>Add2 / Add9</th>
+                <td className="scale-degree">1</td>
+                <td className="scale-degree">2</td>
+                <td className="scale-degree">3</td>
+                <td></td>
+                <td className="scale-degree">5</td>
+                <td></td>
+                <td></td>
+                <td>C Add2 / C Add9</td>
+                <td>
+                  C<sup>add2</sup> / C<sup>add9</sup>
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <th>Add2</th>
+                <td className="scale-degree">1</td>
+                <td className="scale-degree">2</td>
+                <td className="scale-degree">3</td>
+                <td></td>
+                <td className="scale-degree">5</td>
+                <td></td>
+                <td></td>
+                {extensionLevel >= 2 && <td></td>}
+                {extensionLevel >= 2 && <td></td>}
+                {extensionLevel >= 3 && <td></td>}
+                {extensionLevel >= 3 && <td></td>}
+                <td>C Add2</td>
+                <td>
+                  C<sup>add2</sup>
+                </td>
+              </tr>
+            )}
             <tr>
               <th>Add4</th>
               <td className="scale-degree">1</td>
@@ -222,6 +239,26 @@ function Chords() {
                 C<sup>6</sup>
               </td>
             </tr>
+            {extensionLevel >= 2 && (
+              <tr>
+                <th>Add9</th>
+                <td className="scale-degree">1</td>
+                <td></td>
+                <td className="scale-degree">3</td>
+                <td></td>
+                <td className="scale-degree">5</td>
+                <td></td>
+                <td></td>
+                {extensionLevel >= 2 && <td></td>}
+                {extensionLevel >= 2 && <td className="scale-degree">9</td>}
+                {extensionLevel >= 3 && <td></td>}
+                {extensionLevel >= 3 && <td></td>}
+                <td>C Add9</td>
+                <td>
+                  C<sup>add9</sup>
+                </td>
+              </tr>
+            )}
             {extensionLevel >= 1 && (
               <>
                 <tr className="section-header">
