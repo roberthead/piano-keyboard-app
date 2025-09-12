@@ -16,6 +16,8 @@ function Chords() {
               <th className="scale-degree">5</th>
               <th className="scale-degree">6</th>
               <th className="scale-degree">7</th>
+              <th className="scale-degree">8</th>
+              <th className="scale-degree">9</th>
               <th>Example</th>
               <th>Shorthand</th>
             </tr>
@@ -30,6 +32,8 @@ function Chords() {
               <td className="scale-degree">5</td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Major</td>
               <td>C</td>
             </tr>
@@ -40,6 +44,8 @@ function Chords() {
               <td className="scale-degree">♭3</td>
               <td></td>
               <td className="scale-degree">5</td>
+              <td></td>
+              <td></td>
               <td></td>
               <td></td>
               <td>C Minor</td>
@@ -54,6 +60,8 @@ function Chords() {
               <td className="scale-degree">♭5</td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Diminished</td>
               <td>C°</td>
             </tr>
@@ -66,104 +74,10 @@ function Chords() {
               <td className="scale-degree">♯5</td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Augmented</td>
               <td>C+</td>
-            </tr>
-            <tr className="section-header">
-              <th>Seventh Chord</th>
-              <th className="scale-degree">1</th>
-              <th className="scale-degree">2</th>
-              <th className="scale-degree">3</th>
-              <th className="scale-degree">4</th>
-              <th className="scale-degree">5</th>
-              <th className="scale-degree">6</th>
-              <th className="scale-degree">7</th>
-              <th>Example</th>
-              <th>Shorthand</th>
-            </tr>
-            <tr>
-              <th>Major 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">3</td>
-              <td></td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td className="scale-degree">7</td>
-              <td>C Major 7</td>
-              <td>
-                C<sup>maj7</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>Dominant 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">3</td>
-              <td></td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td className="scale-degree">♭7</td>
-              <td>C Dominant 7</td>
-              <td>
-                C<sup>7</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>Minor 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">♭3</td>
-              <td></td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td className="scale-degree">♭7</td>
-              <td>C Minor 7</td>
-              <td>
-                Cm<sup>7</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>Half-Diminished 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">♭3</td>
-              <td></td>
-              <td className="scale-degree">♭5</td>
-              <td></td>
-              <td className="scale-degree">♭7</td>
-              <td>C Half-Diminished 7</td>
-              <td>
-                C<sup>ø7</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>Fully-Diminished 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">♭3</td>
-              <td></td>
-              <td className="scale-degree">♭5</td>
-              <td></td>
-              <td className="scale-degree">𝄫7</td>
-              <td>C Fully-Diminished 7</td>
-              <td>
-                C°<sup>7</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>Minor-Major 7</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td className="scale-degree">♭3</td>
-              <td></td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td className="scale-degree">7</td>
-              <td>C Minor-Major 7</td>
-              <td>
-                Cm<sup>maj7</sup>
-              </td>
             </tr>
             <tr className="section-header">
               <th>Suspended Chord</th>
@@ -174,6 +88,8 @@ function Chords() {
               <th className="scale-degree">5</th>
               <th className="scale-degree">6</th>
               <th className="scale-degree">7</th>
+              <th className="scale-degree">8</th>
+              <th className="scale-degree">9</th>
               <th>Example</th>
               <th>Shorthand</th>
             </tr>
@@ -184,6 +100,8 @@ function Chords() {
               <td></td>
               <td></td>
               <td className="scale-degree">5</td>
+              <td></td>
+              <td></td>
               <td></td>
               <td></td>
               <td>C Sus2</td>
@@ -200,23 +118,11 @@ function Chords() {
               <td className="scale-degree">5</td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Sus4</td>
               <td>
                 C<sup>sus4</sup>
-              </td>
-            </tr>
-            <tr>
-              <th>7Sus4</th>
-              <td className="scale-degree">1</td>
-              <td></td>
-              <td></td>
-              <td className="scale-degree">4</td>
-              <td className="scale-degree">5</td>
-              <td></td>
-              <td className="scale-degree">♭7</td>
-              <td>C7 Sus4</td>
-              <td>
-                C<sup>7sus4</sup>
               </td>
             </tr>
             <tr className="section-header">
@@ -228,6 +134,8 @@ function Chords() {
               <th className="scale-degree">5</th>
               <th className="scale-degree">6</th>
               <th className="scale-degree">7</th>
+              <th className="scale-degree">8</th>
+              <th className="scale-degree">9</th>
               <th>Example</th>
               <th>Shorthand</th>
             </tr>
@@ -238,6 +146,8 @@ function Chords() {
               <td className="scale-degree">3</td>
               <td></td>
               <td className="scale-degree">5</td>
+              <td></td>
+              <td></td>
               <td></td>
               <td></td>
               <td>C Add2 / C Add9</td>
@@ -254,6 +164,8 @@ function Chords() {
               <td className="scale-degree">5</td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Add4</td>
               <td>
                 C<sup>add4</sup>
@@ -268,9 +180,263 @@ function Chords() {
               <td className="scale-degree">5</td>
               <td className="scale-degree">6</td>
               <td></td>
+              <td></td>
+              <td></td>
               <td>C Add6</td>
               <td>
                 C<sup>6</sup>
+              </td>
+            </tr>
+            <tr className="section-header">
+              <th>Seventh Chord</th>
+              <th className="scale-degree">1</th>
+              <th className="scale-degree">2</th>
+              <th className="scale-degree">3</th>
+              <th className="scale-degree">4</th>
+              <th className="scale-degree">5</th>
+              <th className="scale-degree">6</th>
+              <th className="scale-degree">7</th>
+              <th className="scale-degree">8</th>
+              <th className="scale-degree">9</th>
+              <th>Example</th>
+              <th>Shorthand</th>
+            </tr>
+            <tr>
+              <th>Major 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">7</td>
+              <td></td>
+              <td></td>
+              <td>C Major 7</td>
+              <td>
+                C<sup>maj7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Dominant 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td></td>
+              <td>C Dominant 7</td>
+              <td>
+                C<sup>7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Minor 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td></td>
+              <td>C Minor 7</td>
+              <td>
+                Cm<sup>7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Half-Diminished 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">♭5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td></td>
+              <td>C Half-Diminished 7</td>
+              <td>
+                C<sup>ø7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Fully-Diminished 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">♭5</td>
+              <td></td>
+              <td className="scale-degree">𝄫7</td>
+              <td></td>
+              <td></td>
+              <td>C Fully-Diminished 7</td>
+              <td>
+                C°<sup>7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Minor-Major 7</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">7</td>
+              <td></td>
+              <td></td>
+              <td>C Minor-Major 7</td>
+              <td>
+                Cm<sup>maj7</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>7Sus4</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td></td>
+              <td className="scale-degree">4</td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td></td>
+              <td>C7 Sus4</td>
+              <td>
+                C<sup>7sus4</sup>
+              </td>
+            </tr>
+            <tr className="section-header">
+              <th>9th Chord</th>
+              <th className="scale-degree">1</th>
+              <th className="scale-degree">2</th>
+              <th className="scale-degree">3</th>
+              <th className="scale-degree">4</th>
+              <th className="scale-degree">5</th>
+              <th className="scale-degree">6</th>
+              <th className="scale-degree">7</th>
+              <th className="scale-degree">8</th>
+              <th className="scale-degree">9</th>
+              <th>Example</th>
+              <th>Shorthand</th>
+            </tr>
+            <tr>
+              <th>Major 9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">7</td>
+              <td></td>
+              <td className="scale-degree">9</td>
+              <td>C Major 9</td>
+              <td>
+                C<sup>maj9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Dominant 9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td className="scale-degree">9</td>
+              <td>C Dominant 9</td>
+              <td>
+                C<sup>9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Minor 9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td className="scale-degree">9</td>
+              <td>C Minor 9</td>
+              <td>
+                Cm<sup>9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Minor-Major 9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">♭3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">7</td>
+              <td></td>
+              <td className="scale-degree">9</td>
+              <td>C Minor-Major 9</td>
+              <td>
+                Cm<sup>maj9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Dominant 7♭9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td className="scale-degree">♭9</td>
+              <td>C7♭9</td>
+              <td>
+                C<sup>7♭9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>Dominant 7♯9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td></td>
+              <td className="scale-degree">♭7</td>
+              <td></td>
+              <td className="scale-degree">♯9</td>
+              <td>C7♯9</td>
+              <td>
+                C<sup>7♯9</sup>
+              </td>
+            </tr>
+            <tr>
+              <th>6/9</th>
+              <td className="scale-degree">1</td>
+              <td></td>
+              <td className="scale-degree">3</td>
+              <td></td>
+              <td className="scale-degree">5</td>
+              <td className="scale-degree">6</td>
+              <td></td>
+              <td></td>
+              <td className="scale-degree">9</td>
+              <td>C 6/9</td>
+              <td>
+                C<sup>6/9</sup>
               </td>
             </tr>
           </tbody>
