@@ -8,6 +8,10 @@ function Chords() {
     setExtensionLevel((prev) => Math.min(prev + 1, 3));
   };
 
+  const handleSimplify = () => {
+    setExtensionLevel((prev) => Math.max(prev - 1, 0));
+  };
+
   return (
     <div className="chords-container">
       <h1>Chords</h1>
@@ -605,15 +609,18 @@ function Chords() {
           </tbody>
         </table>
       </div>
-      {extensionLevel < 3 && (
-        <button onClick={handleExtend} className="extend-button">
-          {extensionLevel === 0
-            ? "Extend to 7th Chords"
-            : extensionLevel === 1
-            ? "Extend to 9th Chords"
-            : "Extend to 11th Chords"}
-        </button>
-      )}
+      <div className="button-container">
+        {extensionLevel > 0 && (
+          <button onClick={handleSimplify} className="simplify-button">
+            &lt; Simplify
+          </button>
+        )}
+        {extensionLevel < 3 && (
+          <button onClick={handleExtend} className="extend-button">
+            Extend &gt;
+          </button>
+        )}
+      </div>
     </div>
   );
 }
