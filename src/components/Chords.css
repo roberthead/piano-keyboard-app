@@ -59,10 +59,12 @@
 
 .chord-table tbody td {
   font-family: 'Courier New', monospace;
+  font-weight: 600;
 }
 
 .chord-table .scale-degree {
   text-align: center;
+  font-weight: 700;
 }
 
 .chord-table .section-header th {
