@@ -114,14 +114,28 @@
   position: relative;
 }
 
+.key.white.marked {
+  box-shadow: 
+    0 2px 3px rgba(0, 0, 0, 0.3),
+    inset 0 10px 20px rgba(33, 150, 243, 0.6),
+    inset 0 20px 40px rgba(33, 150, 243, 0.3);
+}
+
+.key.black.marked {
+  box-shadow: 
+    0 3px 5px rgba(0, 0, 0, 0.5),
+    inset 0 8px 16px rgba(33, 150, 243, 0.8),
+    inset 0 16px 32px rgba(33, 150, 243, 0.4);
+}
+
 .key.white.marked::after {
   content: '•';
   position: absolute;
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  color: #f44336;
-  font-size: 1.5rem;
+  color: #2196f3;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
@@ -131,7 +145,7 @@
   bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
-  color: #ff9800;
-  font-size: 1.2rem;
+  color: #42a5f5;
+  font-size: 2.5rem;
   font-weight: bold;
 }
