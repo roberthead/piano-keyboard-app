@@ -108,13 +108,14 @@ function Intervals() {
                 return (
                   <g key={interval.semitones}>
                     <text
-                      x={10}
+                      x={startX - 30}
                       y={y + 5}
                       className="interval-label"
-                      textAnchor="start"
+                      textAnchor="middle"
                     >
                       {interval.label}
                     </text>
+                    <circle cx={startX} cy={y} r="4" className="interval-dot" />
                     <line
                       x1={startX}
                       y1={y}
@@ -130,8 +131,8 @@ function Intervals() {
                       className="interval-dot"
                     />
                     <text
-                      x={lineLength + 10}
-                      y={y + 5}
+                      x={lineLength + 20}
+                      y={y + 3}
                       className="interval-name"
                       textAnchor="start"
                     >
