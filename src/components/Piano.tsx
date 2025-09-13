@@ -217,7 +217,7 @@ const Piano = () => {
       <div className="controls">
         <span className="info">Click to play • Ctrl-click to mark/unmark</span>
         <button onClick={clearMarks} disabled={markedKeys.size == 0}>
-          Clear Marks
+          Clear
         </button>
       </div>
     </div>

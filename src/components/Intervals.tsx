@@ -1,24 +1,24 @@
-import { useState, useRef, useEffect } from 'react';
-import './Intervals.css';
+import { useState, useRef, useEffect, useCallback } from "react";
+import "./Intervals.css";
 
 const intervals = [
-  { semitones: 0, label: 'P1', name: 'Perfect Unison' },
-  { semitones: 1, label: 'm2', name: 'Minor 2nd' },
-  { semitones: 2, label: 'M2', name: 'Major 2nd' },
-  { semitones: 3, label: 'm3', name: 'Minor 3rd' },
-  { semitones: 4, label: 'M3', name: 'Major 3rd' },
-  { semitones: 5, label: 'P4', name: 'Perfect 4th' },
-  { semitones: 6, label: 'TT', name: 'Tritone' },
-  { semitones: 7, label: 'P5', name: 'Perfect 5th' },
-  { semitones: 8, label: 'm6', name: 'Minor 6th' },
-  { semitones: 9, label: 'M6', name: 'Major 6th' },
-  { semitones: 10, label: 'm7', name: 'Minor 7th' },
-  { semitones: 11, label: 'M7', name: 'Major 7th' },
-  { semitones: 12, label: 'P8', name: 'Perfect Octave' },
-  { semitones: 13, label: 'm9', name: 'Minor 9th' },
-  { semitones: 14, label: 'M9', name: 'Major 9th' },
-  { semitones: 15, label: 'm10', name: 'Minor 10th' },
-  { semitones: 16, label: 'M10', name: 'Major 10th' },
+  { semitones: 0, label: "P1", name: "Perfect Unison" },
+  { semitones: 1, label: "m2", name: "Minor 2nd" },
+  { semitones: 2, label: "M2", name: "Major 2nd" },
+  { semitones: 3, label: "m3", name: "Minor 3rd" },
+  { semitones: 4, label: "M3", name: "Major 3rd" },
+  { semitones: 5, label: "P4", name: "Perfect 4th" },
+  { semitones: 6, label: "TT", name: "Tritone" },
+  { semitones: 7, label: "P5", name: "Perfect 5th" },
+  { semitones: 8, label: "m6", name: "Minor 6th" },
+  { semitones: 9, label: "M6", name: "Major 6th" },
+  { semitones: 10, label: "m7", name: "Minor 7th" },
+  { semitones: 11, label: "M7", name: "Major 7th" },
+  { semitones: 12, label: "P8", name: "Perfect Octave" },
+  { semitones: 13, label: "m9", name: "Minor 9th" },
+  { semitones: 14, label: "M9", name: "Major 9th" },
+  { semitones: 15, label: "m10", name: "Minor 10th" },
+  { semitones: 16, label: "M10", name: "Major 10th" },
 ];
 
 function Intervals() {
@@ -28,16 +28,23 @@ function Intervals() {
   const [startDragX, setStartDragX] = useState(0);
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
-  // Calculate average spacing based on keyboard dimensions
+  // Calculate spacing based on keyboard dimensions
   // 7 white keys per octave = 12 semitones
-  // Each white key is 2.5rem (40px)
-  const whiteKeyWidth = 40;
-  const whiteKeysPerOctave = 7;
-  const semitonesPerOctave = 12;
+  // Each white key is 2.5rem (40px), so 40px * 7 = 280px per octave
+  // 280px / 12 semitones = 23.333px per semitone, which is 1.65625rem
+  const pixelsPerSemitone = 26.5; // 1.65625rem
 
-  // Average distance per semitone
-  const pixelsPerSemitone =
-    (whiteKeysPerOctave * whiteKeyWidth) / semitonesPerOctave;
+  // Calculate snap grid based on semitone positions
+  // Each semitone is 1.65625rem (26.5px), so snap to those increments
+  const snapToGrid = useCallback(
+    (offset: number): number => {
+      // Round to nearest semitone position
+      const snappedOffset =
+        Math.round(offset / pixelsPerSemitone) * pixelsPerSemitone;
+      return snappedOffset;
+    },
+    [pixelsPerSemitone]
+  );
 
   const lineHeight = 25;
   const startX = 60;
@@ -61,6 +68,8 @@ function Intervals() {
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      // Snap to grid on mouse up
+      setDragOffset((prevOffset) => snapToGrid(prevOffset));
     };
 
     if (isDragging) {
@@ -74,7 +83,7 @@ function Intervals() {
         document.body.style.cursor = "";
       };
     }
-  }, [isDragging, startDragX]);
+  }, [isDragging, startDragX, snapToGrid]);
 
   return (
     <div className={`intervals-container ${isCollapsed ? "collapsed" : ""}`}>

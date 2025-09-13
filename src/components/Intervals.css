@@ -4,9 +4,9 @@
   border-radius: 0.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   margin: 2rem 0;
-  /* 29 white keys * 2.5rem + 2rem padding on each side */
-  width: calc(29 * 2.5rem + 2rem);
-  max-width: calc(29 * 2.5rem + 2rem);
+  /* Match keyboard width exactly */
+  width: 1246.38px;
+  max-width: 1246.38px;
   box-sizing: border-box;
   transition: padding 0.3s ease;
 }
