@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import Intervals from './Intervals';
-import './Piano.css';
+import './Keyboard.css';
 
 interface KeyProps {
   note: string;
@@ -114,7 +114,7 @@ const Octave = ({
   );
 };
 
-const Piano = () => {
+const Keyboard = () => {
   const [activeNote, setActiveNote] = useState<{
     note: string;
     octave: number;
@@ -191,7 +191,7 @@ const Piano = () => {
   }, []);
 
   return (
-    <div className="piano-container">
+    <div className="keyboard-container">
       <Intervals />
 
       <div className="keyboard">
@@ -224,4 +224,4 @@ const Piano = () => {
   );
 };
 
-export default Piano;
+export default Keyboard;

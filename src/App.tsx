@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import Piano from './components/Piano';
+import Keyboard from './components/Keyboard';
 import Chords from './components/Chords';
 import './App.css';
 
@@ -8,7 +8,7 @@ function NavBar() {
   
   return (
     <nav className="nav-bar">
-      <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Piano</Link>
+      <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Keyboard</Link>
       <Link to="/chords" className={location.pathname === '/chords' ? 'active' : ''}>Chords</Link>
     </nav>
   );
@@ -20,7 +20,7 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
-          <Route path="/" element={<Piano />} />
+          <Route path="/" element={<Keyboard />} />
           <Route path="/chords" element={<Chords />} />
         </Routes>
       </div>
