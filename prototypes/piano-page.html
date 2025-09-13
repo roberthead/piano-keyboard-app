@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34;
+}
+
+.keyboard {
+  display: flex;
+  align-items: center;
+}
+
+.octave {
+  display: flex;
+  position: relative;
+}
+
+.key {
+  height: 120px;
+  width: 23px;
+  border: 1px solid #000;
+}
+
+.key.white {
+  background-color: #fff;
+}
+
+.key.black {
+  position: absolute;
+  height: 80px;
+  width: 13px; /* Adjusted width */
+  background-color: #000;
+  z-index: 1;
+  margin-left: 5px; /* New property to create overlap */
+}
+
+.key[data-pitch-class="1"] {
+  left: 10px; /* Adjusted value */
+}
+
+.key[data-pitch-class="3"] {
+  left: 40px; /* Adjusted value */
+}
+
+.key[data-pitch-class="6"] {
+  left: 83px; /* Adjusted value */
+}
+
+.key[data-pitch-class="8"] {
+  left: 113px; /* Adjusted value */
+}
+
+.key[data-pitch-class="10"] {
+  left: 140px; /* Adjusted value */
+}
+
+.key.white:hover {
+  background-color: #f0f0f0; /* Slightly darker shade for white keys */
+}
+
+.key.black:hover {
+  background-color: #444; /* Slightly lighter shade for black keys */
+}
+</style>
+<title>Musical Keyboard</title>
+</head>
+<body>
+<div class="keyboard">
+  <div class="octave" data-octave="3">
+    <div class="key white" data-pitch-class="0" data-sharp-spelling="C"></div>
+    <div class="key black" data-pitch-class="1" data-sharp-spelling="C#"></div>
+    <div class="key white" data-pitch-class="2" data-sharp-spelling="D"></div>
+    <div class="key black" data-pitch-class="3" data-sharp-spelling="D#"></div>
+    <div class="key white" data-pitch-class="4" data-sharp-spelling="E"></div>
+    <div class="key white" data-pitch-class="5" data-sharp-spelling="F"></div>
+    <div class="key black" data-pitch-class="6" data-sharp-spelling="F#"></div>
+    <div class="key white" data-pitch-class="7" data-sharp-spelling="G"></div>
+    <div class="key black" data-pitch-class="8" data-sharp-spelling="G#"></div>
+    <div class="key white" data-pitch-class="9" data-sharp-spelling="A"></div>
+    <div class="key black" data-pitch-class="10" data-sharp-spelling="A#"></div>
+    <div class="key white" data-pitch-class="11" data-sharp-spelling="B"></div>
+  </div>
+  <div class="octave" data-octave="4">
+    <div class="key white" data-pitch-class="0" data-sharp-spelling="C"></div>
+    <div class="key black" data-pitch-class="1" data-sharp-spelling="C#"></div>
+    <div class="key white" data-pitch-class="2" data-sharp-spelling="D"></div>
+    <div class="key black" data-pitch-class="3" data-sharp-spelling="D#"></div>
+    <div class="key white" data-pitch-class="4" data-sharp-spelling="E"></div>
+    <div class="key white" data-pitch-class="5" data-sharp-spelling="F"></div>
+    <div class="key black" data-pitch-class="6" data-sharp-spelling="F#"></div>
+    <div class="key white" data-pitch-class="7" data-sharp-spelling="G"></div>
+    <div class="key black" data-pitch-class="8" data-sharp-spelling="G#"></div>
+    <div class="key white" data-pitch-class="9" data-sharp-spelling="A"></div>
+    <div class="key black" data-pitch-class="10" data-sharp-spelling="A#"></div>
+    <div class="key white" data-pitch-class="11" data-sharp-spelling="B"></div>
+  </div>
+  <div class="octave" data-octave="5">
+    <div class="key white" data-pitch-class="0" data-sharp-spelling="C"></div>
+  </div>
+</div>
+<script>
+  const audioContext = new AudioContext();
+
+  // Envelope parameters
+  const attackTime = 0.01; // seconds
+  const decayTime = 1.0;   // seconds
+  const releaseTime = 0.01;   // seconds
+
+  const maxVolume = 0.8;
+
+  let oscillator = null;
+  let gainNode = audioContext.createGain();
+
+  function playSound(pitchClass, octave) {
+    const frequencies = [
+      16.35, 17.32, 18.35, 19.45, 20.60, 21.83, 23.12, 24.50, 25.96, 27.50, 29.14, 30.87
+    ];
+
+    const noteFrequency = frequencies[pitchClass] * Math.pow(2, octave);
+
+    // Create and configure oscillator
+    oscillator = audioContext.createOscillator();
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(noteFrequency, audioContext.currentTime);
+
+    // Create and configure gain node for envelope
+    const gainNode = audioContext.createGain();
+
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(maxVolume, audioContext.currentTime + attackTime);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + attackTime + decayTime);
+
+    // Connect nodes and start oscillator
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start(audioContext.currentTime);
+
+    // Stop oscillator after the note duration
+    oscillator.stop(audioContext.currentTime + attackTime + decayTime);
+  }
+
+  function stopSound() {
+    console.log('stopSound');
+    if (oscillator) {
+      console.log('oscillator exists');
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
+      oscillator.stop(audioContext.currentTime + releaseTime + 0.01);
+
+      oscillator = null;
+    }
+  }
+
+  document.querySelectorAll('.key').forEach(key => {
+    key.addEventListener('mouseenter', () => {
+      const pitchClass = parseInt(key.getAttribute('data-pitch-class'));
+      const octave = parseInt(key.closest('.octave').getAttribute('data-octave'));
+      playSound(pitchClass, octave);
+    });
+
+    key.addEventListener('mouseleave', () => {
+      stopSound();
+    });
+  });
+</script>
+</body>
+</html>

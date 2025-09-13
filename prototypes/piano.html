@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .keyboard {
+      display: flex;
+      height: 7.5rem;
+      align-items: center;
+      justify-content: center;
+      background-color: #222211;
+      margin: 1rem 0;
+    }
+
+    .octave {
+      display: flex;
+      margin: 0;
+      height: 100%;
+    }
+
+    .key {
+      border: 0;
+      margin: 0.5pt;
+      border-top-width: 2px;
+      height: 98.5%;
+      box-sizing: border-box;
+    }
+
+    .key.white {
+      width: 1.5rem;
+      background-color: #F9F9F2;
+      border-radius: 0 0 2.5px 2.5px;
+    }
+
+    .key.black {
+      width: 1rem;
+      background-color: #222211;
+      position: relative;
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
+      z-index: 1;
+      height: 60%;
+      border-radius: 0 0 2px 2px;
+      box-shadow: inset 5px 0px 3px -3px rgba(255, 255, 255, 0.75);
+    }
+
+    .key.black[data-note="C#"], .key.black[data-note="F#"] {
+      margin-left: -0.65rem;
+      margin-right: -0.35rem;
+    }
+
+    .key.black[data-note="D#"], .key.black[data-note="A#"] {
+      margin-left: -0.35rem;
+      margin-right: -0.65rem;
+    }
+
+    .key.white:hover {
+      background-color: #99BBEE;
+      box-shadow: inset 8px 0px 5px -3px rgba(0, 0, 0, 0.75)
+    }
+
+    .key.black:hover {
+      background-color: #3f659f;
+      box-shadow: inset 5px 0px 3px -3px rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="keyboard">
+    <div class="octave">
+      <!-- Octave 2 -->
+      <div class="key white" data-note="C" data-octave="2"></div>
+      <div class="key black" data-note="C#" data-octave="2"></div>
+      <div class="key white" data-note="D" data-octave="2"></div>
+      <div class="key black" data-note="D#" data-octave="2"></div>
+      <div class="key white" data-note="E" data-octave="2"></div>
+      <div class="key white" data-note="F" data-octave="2"></div>
+      <div class="key black" data-note="F#" data-octave="2"></div>
+      <div class="key white" data-note="G" data-octave="2"></div>
+      <div class="key black" data-note="G#" data-octave="2"></div>
+      <div class="key white" data-note="A" data-octave="2"></div>
+      <div class="key black" data-note="A#" data-octave="2"></div>
+      <div class="key white" data-note="B" data-octave="2"></div>
+    </div>
+    <div class="octave">
+      <!-- Octave 3 -->
+      <div class="key white" data-note="C" data-octave="3"></div>
+      <div class="key black" data-note="C#" data-octave="3"></div>
+      <div class="key white" data-note="D" data-octave="3"></div>
+      <div class="key black" data-note="D#" data-octave="3"></div>
+      <div class="key white" data-note="E" data-octave="3"></div>
+      <div class="key white" data-note="F" data-octave="3"></div>
+      <div class="key black" data-note="F#" data-octave="3"></div>
+      <div class="key white" data-note="G" data-octave="3"></div>
+      <div class="key black" data-note="G#" data-octave="3"></div>
+      <div class="key white" data-note="A" data-octave="3"></div>
+      <div class="key black" data-note="A#" data-octave="3"></div>
+      <div class="key white" data-note="B" data-octave="3"></div>
+    </div>
+    <div class="octave">
+      <!-- Octave 4 -->
+      <div class="key white" data-note="C" data-octave="4"></div>
+      <div class="key black" data-note="C#" data-octave="4"></div>
+      <div class="key white" data-note="D" data-octave="4"></div>
+      <div class="key black" data-note="D#" data-octave="4"></div>
+      <div class="key white" data-note="E" data-octave="4"></div>
+      <div class="key white" data-note="F" data-octave="4"></div>
+      <div class="key black" data-note="F#" data-octave="4"></div>
+      <div class="key white" data-note="G" data-octave="4"></div>
+      <div class="key black" data-note="G#" data-octave="4"></div>
+      <div class="key white" data-note="A" data-octave="4"></div>
+      <div class="key black" data-note="A#" data-octave="4"></div>
+      <div class="key white" data-note="B" data-octave="4"></div>
+    </div>
+    <div class="octave">
+      <!-- Octave 5 -->
+      <div class="key white" data-note="C" data-octave="5"></div>
+      <div class="key black" data-note="C#" data-octave="5"></div>
+      <div class="key white" data-note="D" data-octave="5"></div>
+      <div class="key black" data-note="D#" data-octave="5"></div>
+      <div class="key white" data-note="E" data-octave="5"></div>
+      <div class="key white" data-note="F" data-octave="5"></div>
+      <div class="key black" data-note="F#" data-octave="5"></div>
+      <div class="key white" data-note="G" data-octave="5"></div>
+      <div class="key black" data-note="G#" data-octave="5"></div>
+      <div class="key white" data-note="A" data-octave="5"></div>
+      <div class="key black" data-note="A#" data-octave="5"></div>
+      <div class="key white" data-note="B" data-octave="5"></div>
+    </div>
+    <div class="octave">
+      <!-- Octave 6 -->
+      <div class="key white" data-note="C" data-octave="6"></div>
+    </div>
+  </div>
+</body>
+</html>
