@@ -122,7 +122,7 @@ const Keyboard = () => {
   const [markedKeys, setMarkedKeys] = useState<Set<string>>(new Set());
   const [isArpeggiate, setIsArpeggiate] = useState(false);
   const [audioContext] = useState(
-    () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
+    () => new (window.AudioContext || (window as any).webkitAudioContext)()
   );
 
   const getFrequency = useCallback((note: string, octave: number): number => {
@@ -269,7 +269,7 @@ const Keyboard = () => {
     }
   }, [markedKeys, audioContext, getFrequency, isArpeggiate]);
 
-  const getMarkedPitches = useCallback(() => {
+  const getMarkedPitches = useCallback((): string[] => {
     return Array.from(markedKeys)
       .map((keyId) => {
         const match = keyId.match(/^([A-G]#?)(\d+)$/);
@@ -278,10 +278,10 @@ const Keyboard = () => {
         }
         return null;
       })
-      .filter(Boolean)
+      .filter((pitch): pitch is string => pitch !== null)
       .sort((a, b) => {
-        const matchA = a!.match(/^([A-G]#?)(\d+)$/);
-        const matchB = b!.match(/^([A-G]#?)(\d+)$/);
+        const matchA = a.match(/^([A-G]#?)(\d+)$/);
+        const matchB = b.match(/^([A-G]#?)(\d+)$/);
         if (matchA && matchB) {
           const freqA = getFrequency(matchA[1], parseInt(matchA[2]));
           const freqB = getFrequency(matchB[1], parseInt(matchB[2]));
