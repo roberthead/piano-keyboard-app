@@ -28,6 +28,19 @@
   transform: scale(1.05);
 }
 
+.arpeggiate-checkbox {
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arpeggiate-checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
+
 .info {
   color: white;
   font-size: 0.9rem;

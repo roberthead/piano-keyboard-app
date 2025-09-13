@@ -120,6 +120,7 @@ const Keyboard = () => {
     octave: number;
   } | null>(null);
   const [markedKeys, setMarkedKeys] = useState<Set<string>>(new Set());
+  const [isArpeggiate, setIsArpeggiate] = useState(false);
   const [audioContext] = useState(
     () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
   );
@@ -193,37 +194,80 @@ const Keyboard = () => {
   const playMarkedKeys = useCallback(() => {
     if (markedKeys.size === 0) return;
 
-    // Adjust volume to maintain consistent apparent loudness
-    // Use single key volume (0.6) divided by number of keys to prevent distortion
-    const volumePerKey = 0.6 / markedKeys.size;
+    if (isArpeggiate) {
+      // Sort keys by frequency (lowest to highest)
+      const sortedKeys = Array.from(markedKeys).sort((a, b) => {
+        const matchA = a.match(/^([A-G]#?)(\d+)$/);
+        const matchB = b.match(/^([A-G]#?)(\d+)$/);
+        if (matchA && matchB) {
+          const freqA = getFrequency(matchA[1], parseInt(matchA[2]));
+          const freqB = getFrequency(matchB[1], parseInt(matchB[2]));
+          return freqA - freqB;
+        }
+        return 0;
+      });
 
-    markedKeys.forEach((keyId) => {
-      // Parse the keyId (e.g., "C4", "F#3")
-      const match = keyId.match(/^([A-G]#?)(\d+)$/);
-      if (match) {
-        const [, note, octaveStr] = match;
-        const octave = parseInt(octaveStr);
+      // Play as 1/8 notes at q=120 (120 BPM = 2 beats per second, 1/8 note = 0.25 seconds)
+      const noteInterval = 0.25;
+      const noteDuration = 0.5;
 
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+      sortedKeys.forEach((keyId, index) => {
+        const match = keyId.match(/^([A-G]#?)(\d+)$/);
+        if (match) {
+          const [, note, octaveStr] = match;
+          const octave = parseInt(octaveStr);
+          const startTime = audioContext.currentTime + index * noteInterval;
 
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
 
-        oscillator.frequency.value = getFrequency(note, octave);
-        oscillator.type = "sine";
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
 
-        gainNode.gain.setValueAtTime(volumePerKey, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioContext.currentTime + 2.0
-        );
+          oscillator.frequency.value = getFrequency(note, octave);
+          oscillator.type = "sine";
 
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 2.0);
-      }
-    });
-  }, [markedKeys, audioContext, getFrequency]);
+          gainNode.gain.setValueAtTime(0.6, startTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            startTime + noteDuration
+          );
+
+          oscillator.start(startTime);
+          oscillator.stop(startTime + noteDuration);
+        }
+      });
+    } else {
+      // Play all notes simultaneously (original behavior)
+      const volumePerKey = 0.6 / markedKeys.size;
+
+      markedKeys.forEach((keyId) => {
+        const match = keyId.match(/^([A-G]#?)(\d+)$/);
+        if (match) {
+          const [, note, octaveStr] = match;
+          const octave = parseInt(octaveStr);
+
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+
+          oscillator.frequency.value = getFrequency(note, octave);
+          oscillator.type = "sine";
+
+          gainNode.gain.setValueAtTime(volumePerKey, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioContext.currentTime + 2.0
+          );
+
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 2.0);
+        }
+      });
+    }
+  }, [markedKeys, audioContext, getFrequency, isArpeggiate]);
 
   return (
     <div className="keyboard-container">
@@ -257,6 +301,14 @@ const Keyboard = () => {
         <button onClick={playMarkedKeys} disabled={markedKeys.size === 0}>
           Play
         </button>
+        <label className="arpeggiate-checkbox">
+          <input
+            type="checkbox"
+            checked={isArpeggiate}
+            onChange={(e) => setIsArpeggiate(e.target.checked)}
+          />
+          Arpeggiate
+        </label>
       </div>
     </div>
   );
