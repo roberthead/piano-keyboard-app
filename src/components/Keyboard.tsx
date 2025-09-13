@@ -190,6 +190,41 @@ const Keyboard = () => {
     setMarkedKeys(new Set());
   }, []);
 
+  const playMarkedKeys = useCallback(() => {
+    if (markedKeys.size === 0) return;
+
+    // Adjust volume to maintain consistent apparent loudness
+    // Use single key volume (0.6) divided by number of keys to prevent distortion
+    const volumePerKey = 0.6 / markedKeys.size;
+
+    markedKeys.forEach((keyId) => {
+      // Parse the keyId (e.g., "C4", "F#3")
+      const match = keyId.match(/^([A-G]#?)(\d+)$/);
+      if (match) {
+        const [, note, octaveStr] = match;
+        const octave = parseInt(octaveStr);
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = getFrequency(note, octave);
+        oscillator.type = "sine";
+
+        gainNode.gain.setValueAtTime(volumePerKey, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 2.0
+        );
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 2.0);
+      }
+    });
+  }, [markedKeys, audioContext, getFrequency]);
+
   return (
     <div className="keyboard-container">
       <Intervals />
@@ -216,8 +251,11 @@ const Keyboard = () => {
       </div>
       <div className="controls">
         <span className="info">Click to play • Ctrl-click to mark/unmark</span>
-        <button onClick={clearMarks} disabled={markedKeys.size == 0}>
+        <button onClick={clearMarks} disabled={markedKeys.size === 0}>
           Clear
+        </button>
+        <button onClick={playMarkedKeys} disabled={markedKeys.size === 0}>
+          Play
         </button>
       </div>
     </div>
