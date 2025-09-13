@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
-import Intervals from './Intervals';
-import './Keyboard.css';
+import { useState, useCallback } from "react";
+import PitchList from "./PitchList";
+import "./Keyboard.css";
 
 interface KeyProps {
   note: string;
@@ -269,10 +269,30 @@ const Keyboard = () => {
     }
   }, [markedKeys, audioContext, getFrequency, isArpeggiate]);
 
+  const getMarkedPitches = useCallback(() => {
+    return Array.from(markedKeys)
+      .map((keyId) => {
+        const match = keyId.match(/^([A-G]#?)(\d+)$/);
+        if (match) {
+          return `${match[1]}${match[2]}`;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => {
+        const matchA = a!.match(/^([A-G]#?)(\d+)$/);
+        const matchB = b!.match(/^([A-G]#?)(\d+)$/);
+        if (matchA && matchB) {
+          const freqA = getFrequency(matchA[1], parseInt(matchA[2]));
+          const freqB = getFrequency(matchB[1], parseInt(matchB[2]));
+          return freqA - freqB;
+        }
+        return 0;
+      });
+  }, [markedKeys, getFrequency]);
+
   return (
     <div className="keyboard-container">
-      <Intervals />
-
       <div className="keyboard">
         {[2, 3, 4, 5].map((octave) => (
           <Octave
@@ -310,6 +330,7 @@ const Keyboard = () => {
           Arpeggiate
         </label>
       </div>
+      <PitchList pitches={getMarkedPitches()} />
     </div>
   );
 };
