@@ -207,18 +207,23 @@ const Keyboard = () => {
     const intervals = PATTERNS[selectedPattern] || [];
     const newMarkedKeys = new Set<string>();
 
-    for (let octave = 2; octave <= 6; octave++) {
-      intervals.forEach((interval) => {
-        const noteIndex = (rootIndex + interval) % 12;
-        const adjustedOctave = octave + Math.floor((rootIndex + interval) / 12);
-        if (
-          adjustedOctave <= 6 &&
-          (adjustedOctave < 6 || PITCH_CLASSES[noteIndex] === "C")
-        ) {
-          newMarkedKeys.add(`${PITCH_CLASSES[noteIndex]}${adjustedOctave}`);
+    // Find the octave closest to Middle C (C4) for the root note
+    // If the root is C-F, use octave 4; if G-B, use octave 3 to stay closer to C4
+    const startOctave = rootIndex >= 7 ? 3 : 4; // G=7, G#=8, A=9, A#=10, B=11
+
+    // Mark only one iteration of the pattern
+    intervals.forEach((interval) => {
+      const noteIndex = (rootIndex + interval) % 12;
+      const octaveAdjustment = Math.floor((rootIndex + interval) / 12);
+      const targetOctave = startOctave + octaveAdjustment;
+
+      // Only add if within keyboard range (2-6, with 6 only having C)
+      if (targetOctave >= 2 && targetOctave <= 6) {
+        if (targetOctave < 6 || PITCH_CLASSES[noteIndex] === "C") {
+          newMarkedKeys.add(`${PITCH_CLASSES[noteIndex]}${targetOctave}`);
         }
-      });
-    }
+      }
+    });
 
     setMarkedKeys(newMarkedKeys);
   }, [selectedPattern, rootNote]);
