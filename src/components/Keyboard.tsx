@@ -229,6 +229,16 @@ const Keyboard = () => {
       }
     });
 
+    // For scales, add the root note one octave higher
+    if (PATTERN_GROUPS[0].options.some(opt => opt.value === activePattern)) {
+      const highRootOctave = startOctave + 1;
+      if (highRootOctave >= 2 && highRootOctave <= 6) {
+        if (highRootOctave < 6 || rootNote === "C") {
+          newMarkedKeys.add(`${rootNote}${highRootOctave}`);
+        }
+      }
+    }
+
     setMarkedKeys(newMarkedKeys);
   }, [selectedScale, selectedChord, rootNote]);
 
