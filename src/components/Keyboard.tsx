@@ -261,13 +261,28 @@ const Keyboard = () => {
       // Play as 1/8 notes at q=120 (120 BPM = 2 beats per second, 1/8 note = 0.25 seconds)
       const noteInterval = 0.25;
       const noteDuration = 0.5;
+      const pauseBetween = 0.5; // Pause between ascending and descending
 
-      sortedKeys.forEach((keyId, index) => {
+      // Create ascending and descending sequences
+      const ascendingKeys = [...sortedKeys];
+      const descendingKeys = [...sortedKeys].reverse();
+
+      // Combine both sequences
+      const playSequence = [...ascendingKeys, ...descendingKeys];
+
+      playSequence.forEach((keyId, index) => {
         const match = keyId.match(/^([A-G]#?)(\d+)$/);
         if (match) {
           const [, note, octaveStr] = match;
           const octave = parseInt(octaveStr);
-          const startTime = audioContext.currentTime + index * noteInterval;
+
+          // Add pause after the ascending sequence
+          let timeOffset = index * noteInterval;
+          if (index >= ascendingKeys.length) {
+            timeOffset += pauseBetween;
+          }
+
+          const startTime = audioContext.currentTime + timeOffset;
 
           const oscillator = audioContext.createOscillator();
           const gainNode = audioContext.createGain();
