@@ -10,7 +10,7 @@
 .pattern-controls {
   display: flex;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin: 2rem;
   align-items: center;
 }
 

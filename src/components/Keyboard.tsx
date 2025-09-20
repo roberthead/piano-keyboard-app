@@ -124,7 +124,8 @@ const Keyboard = () => {
   } | null>(null);
   const [markedKeys, setMarkedKeys] = useState<Set<string>>(new Set());
   const [isArpeggiate, setIsArpeggiate] = useState(false);
-  const [selectedPattern, setSelectedPattern] = useState("None");
+  const [selectedScale, setSelectedScale] = useState("None");
+  const [selectedChord, setSelectedChord] = useState("None");
   const [rootNote, setRootNote] = useState("C");
   const [audioContext] = useState(
     () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
@@ -197,14 +198,17 @@ const Keyboard = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedPattern === "None") {
+    // Determine which pattern is active (chord takes priority over scale)
+    const activePattern = selectedChord !== "None" ? selectedChord : selectedScale;
+
+    if (activePattern === "None") {
       return;
     }
 
     const rootIndex = PITCH_CLASSES.indexOf(rootNote as unknown);
     if (rootIndex === -1) return;
 
-    const intervals = PATTERNS[selectedPattern] || [];
+    const intervals = PATTERNS[activePattern] || [];
     const newMarkedKeys = new Set<string>();
 
     // Find the octave closest to Middle C (C4) for the root note
@@ -226,7 +230,7 @@ const Keyboard = () => {
     });
 
     setMarkedKeys(newMarkedKeys);
-  }, [selectedPattern, rootNote]);
+  }, [selectedScale, selectedChord, rootNote]);
 
   const playMarkedKeys = useCallback(() => {
     if (markedKeys.size === 0) return;
@@ -352,20 +356,40 @@ const Keyboard = () => {
           </select>
         </label>
         <label>
-          Pattern:
+          Chord:
           <select
-            value={selectedPattern}
-            onChange={(e) => setSelectedPattern(e.target.value)}
+            value={selectedChord}
+            onChange={(e) => {
+              setSelectedChord(e.target.value);
+              if (e.target.value !== "None") {
+                setSelectedScale("None"); // Clear scale when chord is selected
+              }
+            }}
           >
             <option value="None">None</option>
-            {PATTERN_GROUPS.map((group) => (
-              <optgroup key={group.label} label={group.label}>
-                {group.options.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </optgroup>
+            {PATTERN_GROUPS[1].options.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Scale:
+          <select
+            value={selectedScale}
+            onChange={(e) => {
+              setSelectedScale(e.target.value);
+              if (e.target.value !== "None") {
+                setSelectedChord("None"); // Clear chord when scale is selected
+              }
+            }}
+          >
+            <option value="None">None</option>
+            {PATTERN_GROUPS[0].options.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
           </select>
         </label>
@@ -373,7 +397,7 @@ const Keyboard = () => {
       <div className="keyboard-wrapper">
         <PatternBar
           rootNote={rootNote}
-          pattern={selectedPattern}
+          pattern={selectedChord !== "None" ? selectedChord : selectedScale}
           octaveStart={2}
           octaveEnd={6}
         />
