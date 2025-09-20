@@ -6,7 +6,7 @@ interface PitchListProps {
 
 const PitchList: React.FC<PitchListProps> = ({ pitches }) => {
   const [useFlats, setUseFlats] = useState(false);
-  const [showPitchClasses, setShowPitchClasses] = useState(false);
+  const [showPitchClasses, setShowPitchClasses] = useState(true);
 
   const sharpToFlat: { [key: string]: string } = {
     'C#': 'Db',

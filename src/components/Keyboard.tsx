@@ -1,5 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import PitchList from "./PitchList";
+import PatternBar from "./PatternBar";
+import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
+import { PITCH_CLASSES } from "../constants/pitchClasses";
 import "./Keyboard.css";
 
 interface KeyProps {
@@ -121,8 +124,10 @@ const Keyboard = () => {
   } | null>(null);
   const [markedKeys, setMarkedKeys] = useState<Set<string>>(new Set());
   const [isArpeggiate, setIsArpeggiate] = useState(false);
+  const [selectedPattern, setSelectedPattern] = useState("None");
+  const [rootNote, setRootNote] = useState("C");
   const [audioContext] = useState(
-    () => new (window.AudioContext || (window as any).webkitAudioContext)()
+    () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
   );
 
   const getFrequency = useCallback((note: string, octave: number): number => {
@@ -190,6 +195,33 @@ const Keyboard = () => {
   const clearMarks = useCallback(() => {
     setMarkedKeys(new Set());
   }, []);
+
+  useEffect(() => {
+    if (selectedPattern === "None") {
+      return;
+    }
+
+    const rootIndex = PITCH_CLASSES.indexOf(rootNote as unknown);
+    if (rootIndex === -1) return;
+
+    const intervals = PATTERNS[selectedPattern] || [];
+    const newMarkedKeys = new Set<string>();
+
+    for (let octave = 2; octave <= 6; octave++) {
+      intervals.forEach((interval) => {
+        const noteIndex = (rootIndex + interval) % 12;
+        const adjustedOctave = octave + Math.floor((rootIndex + interval) / 12);
+        if (
+          adjustedOctave <= 6 &&
+          (adjustedOctave < 6 || PITCH_CLASSES[noteIndex] === "C")
+        ) {
+          newMarkedKeys.add(`${PITCH_CLASSES[noteIndex]}${adjustedOctave}`);
+        }
+      });
+    }
+
+    setMarkedKeys(newMarkedKeys);
+  }, [selectedPattern, rootNote]);
 
   const playMarkedKeys = useCallback(() => {
     if (markedKeys.size === 0) return;
@@ -293,25 +325,73 @@ const Keyboard = () => {
 
   return (
     <div className="keyboard-container">
-      <div className="keyboard">
-        {[2, 3, 4, 5].map((octave) => (
+      <div className="pattern-controls">
+        <label>
+          Root:
+          <select
+            value={rootNote}
+            onChange={(e) => setRootNote(e.target.value)}
+          >
+            <option value="C">C</option>
+            <option value="C#">C#/Db</option>
+            <option value="D">D</option>
+            <option value="D#">D#/Eb</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#">F#/Gb</option>
+            <option value="G">G</option>
+            <option value="G#">G#/Ab</option>
+            <option value="A">A</option>
+            <option value="A#">A#/Bb</option>
+            <option value="B">B</option>
+          </select>
+        </label>
+        <label>
+          Pattern:
+          <select
+            value={selectedPattern}
+            onChange={(e) => setSelectedPattern(e.target.value)}
+          >
+            <option value="None">None</option>
+            {PATTERN_GROUPS.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.options.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="keyboard-wrapper">
+        <PatternBar
+          rootNote={rootNote}
+          pattern={selectedPattern}
+          octaveStart={2}
+          octaveEnd={6}
+        />
+        <div className="keyboard">
+          {[2, 3, 4, 5].map((octave) => (
+            <Octave
+              key={octave}
+              octaveNumber={octave}
+              activeNote={activeNote}
+              markedKeys={markedKeys}
+              onPlay={playNote}
+              onMark={toggleMarkKey}
+            />
+          ))}
           <Octave
-            key={octave}
-            octaveNumber={octave}
+            octaveNumber={6}
             activeNote={activeNote}
             markedKeys={markedKeys}
             onPlay={playNote}
             onMark={toggleMarkKey}
+            endNote="C"
           />
-        ))}
-        <Octave
-          octaveNumber={6}
-          activeNote={activeNote}
-          markedKeys={markedKeys}
-          onPlay={playNote}
-          onMark={toggleMarkKey}
-          endNote="C"
-        />
+        </div>
       </div>
       <div className="controls">
         <span className="info">Click to play • Ctrl-click to mark/unmark</span>
