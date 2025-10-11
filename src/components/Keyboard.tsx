@@ -393,11 +393,15 @@ const Keyboard = () => {
         e.preventDefault(); // Prevent page scroll
         playMarkedKeys();
       }
+      // Escape to clear marked keys
+      if (e.code === 'Escape' && markedKeys.size > 0) {
+        clearMarks();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [markedKeys, playMarkedKeys]);
+  }, [markedKeys, playMarkedKeys, clearMarks]);
 
   return (
     <div className="keyboard-container">
@@ -518,7 +522,7 @@ const Keyboard = () => {
         </div>
       </div>
       <div className="controls">
-        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked</span>
+        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked • Esc to clear</span>
         <button onClick={clearMarks} disabled={markedKeys.size === 0}>
           Clear
         </button>
