@@ -1,5 +1,14 @@
 import { useCallback, useRef } from "react";
 
+// Audio playback constants
+const TEMPO_BPM = 120; // Beats per minute for arpeggiation
+const EIGHTH_NOTE_DURATION = 0.25; // Duration of 1/8 note at 120 BPM (seconds)
+const ARPEGGIATE_NOTE_DURATION = 0.5; // How long each note plays in arpeggiation (seconds)
+const ARPEGGIATE_PAUSE_BETWEEN = 0.5; // Pause between ascending and descending sequences (seconds)
+const SINGLE_NOTE_DURATION = 1.0; // Duration for single note playback (seconds)
+const CHORD_NOTE_DURATION = 2.0; // Duration for chord (simultaneous) playback (seconds)
+const DEFAULT_GAIN = 0.6; // Default volume level
+
 interface UsePianoAudioReturn {
   playNote: (note: string, octave: number) => void;
   playMarkedKeys: (markedKeys: Set<string>, isArpeggiate: boolean) => void;
@@ -60,14 +69,14 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
       oscillator.frequency.value = getFrequency(note, octave);
       oscillator.type = "sine";
 
-      gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(DEFAULT_GAIN, audioContext.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(
         0.01,
-        audioContext.currentTime + 1.0
+        audioContext.currentTime + SINGLE_NOTE_DURATION
       );
 
       oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 1.0);
+      oscillator.stop(audioContext.currentTime + SINGLE_NOTE_DURATION);
     },
     [getAudioContext, getFrequency]
   );
@@ -96,10 +105,10 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
           return 0;
         });
 
-        // Play as 1/8 notes at q=120 (120 BPM = 2 beats per second, 1/8 note = 0.25 seconds)
-        const noteInterval = 0.25;
-        const noteDuration = 0.5;
-        const pauseBetween = 0.5; // Pause between ascending and descending
+        // Play as 1/8 notes at the configured tempo
+        const noteInterval = EIGHTH_NOTE_DURATION;
+        const noteDuration = ARPEGGIATE_NOTE_DURATION;
+        const pauseBetween = ARPEGGIATE_PAUSE_BETWEEN; // Pause between ascending and descending
 
         // Create ascending and descending sequences
         const ascendingKeys = [...sortedKeys];
@@ -131,7 +140,7 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
             oscillator.frequency.value = getFrequency(note, octave);
             oscillator.type = "sine";
 
-            gainNode.gain.setValueAtTime(0.6, startTime);
+            gainNode.gain.setValueAtTime(DEFAULT_GAIN, startTime);
             gainNode.gain.exponentialRampToValueAtTime(
               0.01,
               startTime + noteDuration
@@ -143,7 +152,7 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
         });
       } else {
         // Play all notes simultaneously (original behavior)
-        const volumePerKey = 0.6 / markedKeys.size;
+        const volumePerKey = DEFAULT_GAIN / markedKeys.size;
 
         markedKeys.forEach((keyId) => {
           const match = keyId.match(/^([A-G]#?)(\d+)$/);
@@ -163,11 +172,11 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
             gainNode.gain.setValueAtTime(volumePerKey, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(
               0.01,
-              audioContext.currentTime + 2.0
+              audioContext.currentTime + CHORD_NOTE_DURATION
             );
 
             oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 2.0);
+            oscillator.stop(audioContext.currentTime + CHORD_NOTE_DURATION);
           }
         });
       }
