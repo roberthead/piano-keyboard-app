@@ -19,8 +19,9 @@ const Keyboard = () => {
   const [selectedInterval, setSelectedInterval] = useState("None");
   const [rootNote, setRootNote] = useState<PitchClass>("C");
   const [announcement, setAnnouncement] = useState("");
+  const [volume, setVolume] = useState(0.6);
 
-  const { playNote: playAudioNote, playMarkedKeys: playMarkedAudioKeys, getFrequency } = usePianoAudio();
+  const { playNote: playAudioNote, playMarkedKeys: playMarkedAudioKeys, getFrequency } = usePianoAudio({ volume });
 
   const playNote = useCallback(
     (note: string, octave: number) => {
@@ -246,6 +247,19 @@ const Keyboard = () => {
             onChange={(e) => setIsArpeggiate(e.target.checked)}
           />
           Arpeggiate
+        </label>
+        <label className="volume-control">
+          Volume:
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            aria-label="Volume"
+          />
+          <span className="volume-value">{Math.round(volume * 100)}%</span>
         </label>
       </div>
       <PitchList pitches={getMarkedPitches()} />

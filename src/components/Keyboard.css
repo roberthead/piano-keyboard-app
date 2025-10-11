@@ -91,6 +91,26 @@
   cursor: pointer;
 }
 
+.volume-control {
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volume-control input[type="range"] {
+  cursor: pointer;
+  width: 100px;
+  accent-color: #667eea;
+}
+
+.volume-value {
+  min-width: 3rem;
+  text-align: right;
+}
+
 .info {
   color: white;
   font-size: 0.9rem;

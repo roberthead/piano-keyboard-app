@@ -16,7 +16,11 @@ interface UsePianoAudioReturn {
   getFrequency: (note: string, octave: number) => number;
 }
 
-export const usePianoAudio = (): UsePianoAudioReturn => {
+interface UsePianoAudioProps {
+  volume?: number;
+}
+
+export const usePianoAudio = ({ volume = DEFAULT_GAIN }: UsePianoAudioProps = {}): UsePianoAudioReturn => {
   const audioContextRef = useRef<AudioContext | null>(null);
 
   // Initialize audio context lazily
@@ -51,7 +55,7 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
       oscillator.frequency.value = getFrequency(note, octave);
       oscillator.type = "sine";
 
-      gainNode.gain.setValueAtTime(DEFAULT_GAIN, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(
         0.01,
         audioContext.currentTime + SINGLE_NOTE_DURATION
@@ -134,7 +138,7 @@ export const usePianoAudio = (): UsePianoAudioReturn => {
         });
       } else {
         // Play all notes simultaneously (original behavior)
-        const volumePerKey = DEFAULT_GAIN / markedKeys.size;
+        const volumePerKey = volume / markedKeys.size;
 
         markedKeys.forEach((keyId) => {
           const match = keyId.match(/^([A-G]#?)(\d+)$/);
