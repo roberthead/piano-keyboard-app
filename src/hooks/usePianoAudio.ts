@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
 // Audio playback constants
-const TEMPO_BPM = 120; // Beats per minute for arpeggiation
+// const TEMPO_BPM = 120; // Beats per minute for arpeggiation (for reference/future use)
 const EIGHTH_NOTE_DURATION = 0.25; // Duration of 1/8 note at 120 BPM (seconds)
 const ARPEGGIATE_NOTE_DURATION = 0.5; // How long each note plays in arpeggiation (seconds)
 const ARPEGGIATE_PAUSE_BETWEEN = 0.5; // Pause between ascending and descending sequences (seconds)

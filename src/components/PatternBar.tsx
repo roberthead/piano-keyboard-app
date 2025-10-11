@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { PATTERNS } from "../constants/musicPatterns";
-import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
+import { PITCH_CLASSES, getPitchClassIndex, type PitchClass } from "../constants/pitchClasses";
 import "./PatternBar.css";
 
 interface PatternBarProps {
-  rootNote: string;
+  rootNote: PitchClass;
   pattern: string;
   octaveStart: number;
   octaveEnd: number;

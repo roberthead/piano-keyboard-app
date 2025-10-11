@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import PitchList from "./PitchList";
 import PatternBar from "./PatternBar";
 import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
-import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
+import { PITCH_CLASSES, getPitchClassIndex, type PitchClass } from "../constants/pitchClasses";
 import { usePianoAudio } from "../hooks/usePianoAudio";
 import "./Keyboard.css";
 
@@ -69,7 +69,7 @@ const PianoKey = ({
     onPlay("", 0);
   };
 
-  const handleTouchCancel = (e: React.TouchEvent) => {
+  const handleTouchCancel = () => {
     // Handle case where touch is cancelled (e.g., user drags off the key)
     if (longPressTimerRef.current) {
       clearTimeout(longPressTimerRef.current);
@@ -88,7 +88,6 @@ const PianoKey = ({
     }
   };
 
-  const keyLabel = `${note}${octave}`;
   const ariaLabel = `${note} ${octave}${isMarked ? ', marked' : ''}`;
 
   return (
@@ -203,7 +202,7 @@ const Keyboard = () => {
   const [selectedScale, setSelectedScale] = useState("None");
   const [selectedChord, setSelectedChord] = useState("None");
   const [selectedInterval, setSelectedInterval] = useState("None");
-  const [rootNote, setRootNote] = useState("C");
+  const [rootNote, setRootNote] = useState<PitchClass>("C");
   const [announcement, setAnnouncement] = useState("");
 
   const { playNote: playAudioNote, playMarkedKeys: playMarkedAudioKeys, getFrequency } = usePianoAudio();
@@ -225,7 +224,6 @@ const Keyboard = () => {
     const keyId = `${note}${octave}`;
     setMarkedKeys((prev) => {
       const newSet = new Set(prev);
-      const isMarking = !newSet.has(keyId);
       if (newSet.has(keyId)) {
         newSet.delete(keyId);
         setAnnouncement(`${note}${octave} unmarked`);
@@ -379,7 +377,7 @@ const Keyboard = () => {
           Root:
           <select
             value={rootNote}
-            onChange={(e) => setRootNote(e.target.value)}
+            onChange={(e) => setRootNote(e.target.value as PitchClass)}
           >
             <option value="C">C</option>
             <option value="C#">C#/Db</option>
