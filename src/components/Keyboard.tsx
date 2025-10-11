@@ -385,6 +385,20 @@ const Keyboard = () => {
       });
   }, [markedKeys, getFrequency]);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Spacebar to play marked keys
+      if (e.code === 'Space' && markedKeys.size > 0) {
+        e.preventDefault(); // Prevent page scroll
+        playMarkedKeys();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [markedKeys, playMarkedKeys]);
+
   return (
     <div className="keyboard-container">
       <div className="pattern-controls">
@@ -504,7 +518,7 @@ const Keyboard = () => {
         </div>
       </div>
       <div className="controls">
-        <span className="info">Click to play • Ctrl-click to mark/unmark</span>
+        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked</span>
         <button onClick={clearMarks} disabled={markedKeys.size === 0}>
           Clear
         </button>
