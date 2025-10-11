@@ -3,6 +3,7 @@ import PitchList from "./PitchList";
 import PatternBar from "./PatternBar";
 import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
 import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
+import { usePianoAudio } from "../hooks/usePianoAudio";
 import "./Keyboard.css";
 
 interface KeyProps {
@@ -140,28 +141,8 @@ const Keyboard = () => {
   const [selectedChord, setSelectedChord] = useState("None");
   const [selectedInterval, setSelectedInterval] = useState("None");
   const [rootNote, setRootNote] = useState("C");
-  const [audioContext] = useState(
-    () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
-  );
 
-  const getFrequency = useCallback((note: string, octave: number): number => {
-    const noteMap: { [key: string]: number } = {
-      C: -9,
-      "C#": -8,
-      D: -7,
-      "D#": -6,
-      E: -5,
-      F: -4,
-      "F#": -3,
-      G: -2,
-      "G#": -1,
-      A: 0,
-      "A#": 1,
-      B: 2,
-    };
-    const halfSteps = noteMap[note] + (octave - 4) * 12;
-    return 440 * Math.pow(2, halfSteps / 12);
-  }, []);
+  const { playNote: playAudioNote, playMarkedKeys: playMarkedAudioKeys, getFrequency } = usePianoAudio();
 
   const playNote = useCallback(
     (note: string, octave: number) => {
@@ -170,32 +151,10 @@ const Keyboard = () => {
         return;
       }
 
-      // Resume audio context if suspended (required by browser autoplay policies)
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-
       setActiveNote({ note, octave });
-
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = getFrequency(note, octave);
-      oscillator.type = "sine";
-
-      gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.01,
-        audioContext.currentTime + 1.0
-      );
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 1.0);
+      playAudioNote(note, octave);
     },
-    [audioContext, getFrequency]
+    [playAudioNote]
   );
 
   const toggleMarkKey = useCallback((note: string, octave: number) => {
@@ -266,102 +225,8 @@ const Keyboard = () => {
   }, [selectedScale, selectedChord, selectedInterval, rootNote]);
 
   const playMarkedKeys = useCallback(() => {
-    if (markedKeys.size === 0) return;
-
-    // Resume audio context if suspended (required by browser autoplay policies)
-    if (audioContext.state === 'suspended') {
-      audioContext.resume();
-    }
-
-    if (isArpeggiate) {
-      // Sort keys by frequency (lowest to highest)
-      const sortedKeys = Array.from(markedKeys).sort((a, b) => {
-        const matchA = a.match(/^([A-G]#?)(\d+)$/);
-        const matchB = b.match(/^([A-G]#?)(\d+)$/);
-        if (matchA && matchB) {
-          const freqA = getFrequency(matchA[1], parseInt(matchA[2]));
-          const freqB = getFrequency(matchB[1], parseInt(matchB[2]));
-          return freqA - freqB;
-        }
-        return 0;
-      });
-
-      // Play as 1/8 notes at q=120 (120 BPM = 2 beats per second, 1/8 note = 0.25 seconds)
-      const noteInterval = 0.25;
-      const noteDuration = 0.5;
-      const pauseBetween = 0.5; // Pause between ascending and descending
-
-      // Create ascending and descending sequences
-      const ascendingKeys = [...sortedKeys];
-      const descendingKeys = [...sortedKeys].reverse();
-
-      // Combine both sequences
-      const playSequence = [...ascendingKeys, ...descendingKeys];
-
-      playSequence.forEach((keyId, index) => {
-        const match = keyId.match(/^([A-G]#?)(\d+)$/);
-        if (match) {
-          const [, note, octaveStr] = match;
-          const octave = parseInt(octaveStr);
-
-          // Add pause after the ascending sequence
-          let timeOffset = index * noteInterval;
-          if (index >= ascendingKeys.length) {
-            timeOffset += pauseBetween;
-          }
-
-          const startTime = audioContext.currentTime + timeOffset;
-
-          const oscillator = audioContext.createOscillator();
-          const gainNode = audioContext.createGain();
-
-          oscillator.connect(gainNode);
-          gainNode.connect(audioContext.destination);
-
-          oscillator.frequency.value = getFrequency(note, octave);
-          oscillator.type = "sine";
-
-          gainNode.gain.setValueAtTime(0.6, startTime);
-          gainNode.gain.exponentialRampToValueAtTime(
-            0.01,
-            startTime + noteDuration
-          );
-
-          oscillator.start(startTime);
-          oscillator.stop(startTime + noteDuration);
-        }
-      });
-    } else {
-      // Play all notes simultaneously (original behavior)
-      const volumePerKey = 0.6 / markedKeys.size;
-
-      markedKeys.forEach((keyId) => {
-        const match = keyId.match(/^([A-G]#?)(\d+)$/);
-        if (match) {
-          const [, note, octaveStr] = match;
-          const octave = parseInt(octaveStr);
-
-          const oscillator = audioContext.createOscillator();
-          const gainNode = audioContext.createGain();
-
-          oscillator.connect(gainNode);
-          gainNode.connect(audioContext.destination);
-
-          oscillator.frequency.value = getFrequency(note, octave);
-          oscillator.type = "sine";
-
-          gainNode.gain.setValueAtTime(volumePerKey, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(
-            0.01,
-            audioContext.currentTime + 2.0
-          );
-
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 2.0);
-        }
-      });
-    }
-  }, [markedKeys, audioContext, getFrequency, isArpeggiate]);
+    playMarkedAudioKeys(markedKeys, isArpeggiate);
+  }, [playMarkedAudioKeys, markedKeys, isArpeggiate]);
 
   const getMarkedPitches = useCallback((): string[] => {
     return Array.from(markedKeys)
