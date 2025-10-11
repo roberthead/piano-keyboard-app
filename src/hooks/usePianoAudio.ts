@@ -64,7 +64,7 @@ export const usePianoAudio = ({ volume = DEFAULT_GAIN }: UsePianoAudioProps = {}
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + SINGLE_NOTE_DURATION);
     },
-    [getAudioContext, getFrequency]
+    [getAudioContext, volume]
   );
 
   const playMarkedKeys = useCallback(
@@ -167,7 +167,7 @@ export const usePianoAudio = ({ volume = DEFAULT_GAIN }: UsePianoAudioProps = {}
         });
       }
     },
-    [getAudioContext, getFrequency]
+    [getAudioContext, volume]
   );
 
   return {
