@@ -1,10 +1,12 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import PitchList from "./PitchList";
 import PatternBar from "./PatternBar";
 import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
 import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
 import { usePianoAudio } from "../hooks/usePianoAudio";
 import "./Keyboard.css";
+
+const LONG_PRESS_DURATION = 500; // milliseconds
 
 interface KeyProps {
   note: string;
@@ -25,17 +27,54 @@ const PianoKey = ({
   onPlay,
   onMark,
 }: KeyProps) => {
+  const longPressTimerRef = useRef<number | null>(null);
+  const isLongPressRef = useRef(false);
+
   const className = `key ${isBlack ? "black" : "white"} ${
     isActive ? "active" : ""
   } ${isMarked ? "marked" : ""}`;
 
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault(); // Prevent mouse events from firing
+    isLongPressRef.current = false;
     onPlay(note, octave);
+
+    // Clear any existing timer first
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+    }
+
+    // Start long-press timer
+    longPressTimerRef.current = window.setTimeout(() => {
+      isLongPressRef.current = true;
+      onMark(note, octave);
+      longPressTimerRef.current = null; // Clear timer ref after firing
+      // Provide haptic feedback if available
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }, LONG_PRESS_DURATION);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent event from bubbling
+
+    // Clear long-press timer if it hasn't fired yet
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+
+    onPlay("", 0);
+  };
+
+  const handleTouchCancel = (e: React.TouchEvent) => {
+    // Handle case where touch is cancelled (e.g., user drags off the key)
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
     onPlay("", 0);
   };
 
@@ -66,10 +105,16 @@ const PianoKey = ({
       onMouseEnter={(e) => e.buttons === 1 && onPlay(note, octave)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
       onKeyDown={handleKeyDown}
       onContextMenu={(e) => {
         e.preventDefault();
-        onMark(note, octave);
+        // Only handle context menu if it wasn't triggered by a long-press
+        // (on mobile, long-press can trigger context menu)
+        if (!isLongPressRef.current) {
+          onMark(note, octave);
+        }
+        isLongPressRef.current = false; // Reset flag
       }}
     />
   );
@@ -446,7 +491,7 @@ const Keyboard = () => {
         </div>
       </div>
       <div className="controls">
-        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked • Esc to clear • 2-5 for octave</span>
+        <span className="info">Click to play • Ctrl-click or long-press to mark • Space to play marked • Esc to clear • 2-5 for octave</span>
         <button onClick={clearMarks} disabled={markedKeys.size === 0}>
           Clear
         </button>
