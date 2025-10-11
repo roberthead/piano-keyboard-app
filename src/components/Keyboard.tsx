@@ -397,6 +397,40 @@ const Keyboard = () => {
       if (e.code === 'Escape' && markedKeys.size > 0) {
         clearMarks();
       }
+      // Number keys 2-5 to transpose marked pitches to that octave
+      if (['Digit2', 'Digit3', 'Digit4', 'Digit5'].includes(e.code) && markedKeys.size > 0) {
+        e.preventDefault();
+        const targetOctave = parseInt(e.code.replace('Digit', ''));
+
+        // Parse marked keys to get pitch classes and octaves
+        const markedPitches = Array.from(markedKeys).map(keyId => {
+          const match = keyId.match(/^([A-G]#?)(\d+)$/);
+          if (match) {
+            return { note: match[1], octave: parseInt(match[2]) };
+          }
+          return null;
+        }).filter((p): p is { note: string; octave: number } => p !== null);
+
+        if (markedPitches.length === 0) return;
+
+        // Find the lowest octave among marked pitches
+        const lowestOctave = Math.min(...markedPitches.map(p => p.octave));
+        const octaveShift = targetOctave - lowestOctave;
+
+        // Transpose all marked pitches by the octave shift
+        const transposedKeys = new Set<string>();
+        markedPitches.forEach(({ note, octave }) => {
+          const newOctave = octave + octaveShift;
+          // Only add if within valid range (2-6, with 6 only having C)
+          if (newOctave >= 2 && newOctave <= 6) {
+            if (newOctave < 6 || note === 'C') {
+              transposedKeys.add(`${note}${newOctave}`);
+            }
+          }
+        });
+
+        setMarkedKeys(transposedKeys);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -522,7 +556,7 @@ const Keyboard = () => {
         </div>
       </div>
       <div className="controls">
-        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked • Esc to clear</span>
+        <span className="info">Click to play • Ctrl-click to mark/unmark • Space to play marked • Esc to clear • 2-5 for octave</span>
         <button onClick={clearMarks} disabled={markedKeys.size === 0}>
           Clear
         </button>
