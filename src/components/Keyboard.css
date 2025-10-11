@@ -177,6 +177,8 @@
   cursor: pointer;
   transition: all 0.1s ease;
   user-select: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .key.white {

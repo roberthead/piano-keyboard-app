@@ -28,6 +28,16 @@ const PianoKey = ({
     isActive ? "active" : ""
   } ${isMarked ? "marked" : ""}`;
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent mouse events from firing
+    onPlay(note, octave);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    onPlay("", 0);
+  };
+
   return (
     <div
       className={className}
@@ -36,6 +46,8 @@ const PianoKey = ({
       onMouseDown={() => onPlay(note, octave)}
       onMouseUp={() => onPlay("", 0)}
       onMouseEnter={(e) => e.buttons === 1 && onPlay(note, octave)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onContextMenu={(e) => {
         e.preventDefault();
         onMark(note, octave);
