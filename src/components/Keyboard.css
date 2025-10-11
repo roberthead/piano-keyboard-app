@@ -7,6 +7,18 @@
   min-height: 100vh;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .pattern-controls {
   display: flex;
   gap: 2rem;
@@ -181,6 +193,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.key:focus {
+  outline: none;
+}
+
+.key:focus-visible {
+  outline: none;
+}
+
 .key.white {
   width: 2.5rem;
   height: 100%;
@@ -188,6 +208,12 @@
   border-radius: 0 0 0.25rem 0.25rem;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
   position: relative;
+}
+
+.key.white:focus {
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 3px rgba(255, 215, 0, 1);
 }
 
 .key.black {
@@ -200,6 +226,12 @@
   z-index: 2;
   border-radius: 0 0 0.2rem 0.2rem;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.key.black:focus {
+  box-shadow:
+    0 3px 5px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 3px rgba(255, 215, 0, 1);
 }
 
 .key.black[data-note="C#"] {
@@ -251,11 +283,27 @@
     inset 0 20px 40px rgba(33, 150, 243, 0.3);
 }
 
+.key.white.marked:focus {
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.3),
+    inset 0 10px 20px rgba(33, 150, 243, 0.6),
+    inset 0 20px 40px rgba(33, 150, 243, 0.3),
+    inset 0 0 0 3px rgba(255, 215, 0, 1);
+}
+
 .key.black.marked {
   box-shadow:
     0 3px 5px rgba(0, 0, 0, 0.5),
     inset 0 8px 16px rgba(33, 150, 243, 0.8),
     inset 0 16px 32px rgba(33, 150, 243, 0.4);
+}
+
+.key.black.marked:focus {
+  box-shadow:
+    0 3px 5px rgba(0, 0, 0, 0.5),
+    inset 0 8px 16px rgba(33, 150, 243, 0.8),
+    inset 0 16px 32px rgba(33, 150, 243, 0.4),
+    inset 0 0 0 3px rgba(255, 215, 0, 1);
 }
 
 .key.white.marked::after {

@@ -39,16 +39,34 @@ const PianoKey = ({
     onPlay("", 0);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onPlay(note, octave);
+      onMark(note, octave);
+      // Stop playing after a short duration
+      setTimeout(() => onPlay("", 0), 500);
+    }
+  };
+
+  const keyLabel = `${note}${octave}`;
+  const ariaLabel = `${note} ${octave}${isMarked ? ', marked' : ''}`;
+
   return (
     <div
       className={className}
       data-note={note}
       data-octave={octave}
+      role="button"
+      tabIndex={0}
+      aria-label={ariaLabel}
+      aria-pressed={isMarked}
       onMouseDown={() => onPlay(note, octave)}
       onMouseUp={() => onPlay("", 0)}
       onMouseEnter={(e) => e.buttons === 1 && onPlay(note, octave)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onKeyDown={handleKeyDown}
       onContextMenu={(e) => {
         e.preventDefault();
         onMark(note, octave);
@@ -141,6 +159,7 @@ const Keyboard = () => {
   const [selectedChord, setSelectedChord] = useState("None");
   const [selectedInterval, setSelectedInterval] = useState("None");
   const [rootNote, setRootNote] = useState("C");
+  const [announcement, setAnnouncement] = useState("");
 
   const { playNote: playAudioNote, playMarkedKeys: playMarkedAudioKeys, getFrequency } = usePianoAudio();
 
@@ -161,10 +180,13 @@ const Keyboard = () => {
     const keyId = `${note}${octave}`;
     setMarkedKeys((prev) => {
       const newSet = new Set(prev);
+      const isMarking = !newSet.has(keyId);
       if (newSet.has(keyId)) {
         newSet.delete(keyId);
+        setAnnouncement(`${note}${octave} unmarked`);
       } else {
         newSet.add(keyId);
+        setAnnouncement(`${note}${octave} marked`);
       }
       return newSet;
     });
@@ -172,6 +194,7 @@ const Keyboard = () => {
 
   const clearMarks = useCallback(() => {
     setMarkedKeys(new Set());
+    setAnnouncement("All marks cleared");
   }, []);
 
   useEffect(() => {
@@ -226,6 +249,8 @@ const Keyboard = () => {
 
   const playMarkedKeys = useCallback(() => {
     playMarkedAudioKeys(markedKeys, isArpeggiate);
+    const count = markedKeys.size;
+    setAnnouncement(`Playing ${count} marked ${count === 1 ? 'key' : 'keys'}${isArpeggiate ? ' arpeggiated' : ''}`);
   }, [playMarkedAudioKeys, markedKeys, isArpeggiate]);
 
   const getMarkedPitches = useCallback((): string[] => {
@@ -438,6 +463,15 @@ const Keyboard = () => {
         </label>
       </div>
       <PitchList pitches={getMarkedPitches()} />
+      {/* Screen reader announcements */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {announcement}
+      </div>
     </div>
   );
 };
