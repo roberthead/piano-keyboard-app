@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import PitchList from "./PitchList";
 import PatternBar from "./PatternBar";
-import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
-import { PITCH_CLASSES, getPitchClassIndex, type PitchClass } from "../constants/pitchClasses";
+import PatternControls from "./PatternControls";
+import { PATTERNS, PATTERN_GROUPS, PITCH_CLASSES, getPitchClassIndex, type PitchClass } from "../constants";
 import { usePianoAudio } from "../hooks/usePianoAudio";
 import "./Keyboard.css";
 
@@ -372,88 +372,16 @@ const Keyboard = () => {
 
   return (
     <div className="keyboard-container">
-      <div className="pattern-controls">
-        <label>
-          Root:
-          <select
-            value={rootNote}
-            onChange={(e) => setRootNote(e.target.value as PitchClass)}
-          >
-            <option value="C">C</option>
-            <option value="C#">C#/Db</option>
-            <option value="D">D</option>
-            <option value="D#">D#/Eb</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="F#">F#/Gb</option>
-            <option value="G">G</option>
-            <option value="G#">G#/Ab</option>
-            <option value="A">A</option>
-            <option value="A#">A#/Bb</option>
-            <option value="B">B</option>
-          </select>
-        </label>
-        <label>
-          Interval:
-          <select
-            value={selectedInterval}
-            onChange={(e) => {
-              setSelectedInterval(e.target.value);
-              if (e.target.value !== "None") {
-                setSelectedScale("None");
-                setSelectedChord("None");
-              }
-            }}
-          >
-            <option value="None">None</option>
-            {PATTERN_GROUPS[2].options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Chord:
-          <select
-            value={selectedChord}
-            onChange={(e) => {
-              setSelectedChord(e.target.value);
-              if (e.target.value !== "None") {
-                setSelectedScale("None");
-                setSelectedInterval("None");
-              }
-            }}
-          >
-            <option value="None">None</option>
-            {PATTERN_GROUPS[1].options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Scale:
-          <select
-            value={selectedScale}
-            onChange={(e) => {
-              setSelectedScale(e.target.value);
-              if (e.target.value !== "None") {
-                setSelectedChord("None");
-                setSelectedInterval("None");
-              }
-            }}
-          >
-            <option value="None">None</option>
-            {PATTERN_GROUPS[0].options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      <PatternControls
+        rootNote={rootNote}
+        selectedScale={selectedScale}
+        selectedChord={selectedChord}
+        selectedInterval={selectedInterval}
+        onRootNoteChange={setRootNote}
+        onScaleChange={setSelectedScale}
+        onChordChange={setSelectedChord}
+        onIntervalChange={setSelectedInterval}
+      />
       <div className="keyboard-wrapper">
         <PatternBar
           rootNote={rootNote}
