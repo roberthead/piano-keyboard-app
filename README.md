@@ -1,69 +1,102 @@
-# React + TypeScript + Vite
+# Piano Keyboard App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive web-based piano keyboard for learning and exploring music theory. Play notes, visualize musical patterns (scales, chords, intervals), and hear how they sound together.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Interactive Piano Keyboard
+- 4+ octave range (C2-C6) with realistic visual feedback
+- Click or tap to play individual notes
+- Touch support for mobile devices
+- Mouse drag to play multiple notes in sequence
 
-## Expanding the ESLint configuration
+### Musical Pattern Visualization
+- **Scales**: Major, Natural Minor, Harmonic Minor, Melodic Minor, Dorian, Phrygian, Lydian, Mixolydian, Locrian, Pentatonic Major/Minor, Blues, Chromatic
+- **Chords**: Major, Minor, Diminished, Augmented triads; Major 7th, Dominant 7th, Minor 7th, Half-Diminished 7th, Fully-Diminished 7th
+- **Intervals**: All standard intervals from unison to octave
+- Pattern indicator bar shows which notes belong to the selected pattern
+- Choose any root note (C through B with sharps/flats)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Marking & Playback
+- **Ctrl-click** (Mac) or **Right-click** to mark/unmark individual keys
+- Mark keys to create custom chord voicings or melodies
+- **Play** button plays all marked keys simultaneously
+- **Arpeggiate** mode plays marked keys as a sequence (ascending then descending)
+- Visual pitch display with sharp/flat notation toggle
+- Pitch class reduction option to show unique note names
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Keyboard Shortcuts
+- **Space**: Play marked keys
+- **Esc**: Clear all marked keys
+- **2-5**: Transpose marked keys to octave 2, 3, 4, or 5 (preserves intervals)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Music Theory Reference
+- Dedicated **Chords** page with comprehensive chord chart
+- Shows scale degrees for triads, suspended chords, add chords, 7th chords, 9th chords, and 11th chords
+- Progressive detail levels (Extend/Simplify buttons)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Technical Details
+
+Built with:
+- **React 19** with TypeScript
+- **Vite** for fast development and optimized builds
+- **Web Audio API** for sound generation
+- **React Router** for navigation
+- Fully typed with TypeScript for better developer experience
+
+## Getting Started
+
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Visit `http://localhost:5173` to use the app.
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Deploy
+
+```bash
+npm run deploy
+```
+
+Deploys to GitHub Pages.
+
+## Usage Tips
+
+1. **Learning scales**: Select a root note and scale type to see all notes highlighted on the keyboard
+2. **Building chords**: Use Ctrl-click to mark individual notes and experiment with different voicings
+3. **Ear training**: Mark notes of a chord, play them together, then use arpeggiate to hear each note individually
+4. **Transposition practice**: Mark a pattern in one octave, then press 2-5 to instantly move it to different registers
+5. **Creating melodies**: Mark a sequence of notes, then play with arpeggiate to hear your melody
+
+## Browser Compatibility
+
+Works in all modern browsers with Web Audio API support:
+- Chrome/Edge 89+
+- Firefox 88+
+- Safari 14.1+
+
+Mobile browsers supported with touch interaction.
+
+## License
+
+MIT
