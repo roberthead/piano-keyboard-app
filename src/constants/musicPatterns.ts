@@ -29,6 +29,21 @@ export const PATTERNS: Record<string, PatternIntervals> = {
   "Minor 7th": [0, 3, 7, 10],
   "Half-Diminished 7th": [0, 3, 6, 10],
   "Fully-Diminished 7th": [0, 3, 6, 9],
+
+  // Intervals
+  "P1 (Unison)": [0],
+  "m2 (Minor 2nd)": [0, 1],
+  "M2 (Major 2nd)": [0, 2],
+  "m3 (Minor 3rd)": [0, 3],
+  "M3 (Major 3rd)": [0, 4],
+  "P4 (Perfect 4th)": [0, 5],
+  "TT (Tritone)": [0, 6],
+  "P5 (Perfect 5th)": [0, 7],
+  "m6 (Minor 6th)": [0, 8],
+  "M6 (Major 6th)": [0, 9],
+  "m7 (Minor 7th)": [0, 10],
+  "M7 (Major 7th)": [0, 11],
+  "P8 (Octave)": [0, 12],
 };
 
 // Grouping metadata for UI dropdown rendering.
@@ -71,6 +86,24 @@ export const PATTERN_GROUPS: PatternGroup[] = [
       { value: "Minor 7th", label: "Minor 7th" },
       { value: "Half-Diminished 7th", label: "Half-Diminished 7th" },
       { value: "Fully-Diminished 7th", label: "Fully-Diminished 7th" },
+    ],
+  },
+  {
+    label: "Intervals",
+    options: [
+      { value: "P1 (Unison)", label: "P1 (Unison)" },
+      { value: "m2 (Minor 2nd)", label: "m2 (Minor 2nd)" },
+      { value: "M2 (Major 2nd)", label: "M2 (Major 2nd)" },
+      { value: "m3 (Minor 3rd)", label: "m3 (Minor 3rd)" },
+      { value: "M3 (Major 3rd)", label: "M3 (Major 3rd)" },
+      { value: "P4 (Perfect 4th)", label: "P4 (Perfect 4th)" },
+      { value: "TT (Tritone)", label: "TT (Tritone)" },
+      { value: "P5 (Perfect 5th)", label: "P5 (Perfect 5th)" },
+      { value: "m6 (Minor 6th)", label: "m6 (Minor 6th)" },
+      { value: "M6 (Major 6th)", label: "M6 (Major 6th)" },
+      { value: "m7 (Minor 7th)", label: "m7 (Minor 7th)" },
+      { value: "M7 (Major 7th)", label: "M7 (Major 7th)" },
+      { value: "P8 (Octave)", label: "P8 (Octave)" },
     ],
   },
 ];

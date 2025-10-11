@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import PitchList from "./PitchList";
 import PatternBar from "./PatternBar";
 import { PATTERNS, PATTERN_GROUPS } from "../constants/musicPatterns";
-import { PITCH_CLASSES } from "../constants/pitchClasses";
+import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
 import "./Keyboard.css";
 
 interface KeyProps {
@@ -126,6 +126,7 @@ const Keyboard = () => {
   const [isArpeggiate, setIsArpeggiate] = useState(false);
   const [selectedScale, setSelectedScale] = useState("None");
   const [selectedChord, setSelectedChord] = useState("None");
+  const [selectedInterval, setSelectedInterval] = useState("None");
   const [rootNote, setRootNote] = useState("C");
   const [audioContext] = useState(
     () => new (window.AudioContext || (window as unknown).webkitAudioContext)()
@@ -155,6 +156,11 @@ const Keyboard = () => {
       if (!note) {
         setActiveNote(null);
         return;
+      }
+
+      // Resume audio context if suspended (required by browser autoplay policies)
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
       }
 
       setActiveNote({ note, octave });
@@ -198,14 +204,19 @@ const Keyboard = () => {
   }, []);
 
   useEffect(() => {
-    // Determine which pattern is active (chord takes priority over scale)
-    const activePattern = selectedChord !== "None" ? selectedChord : selectedScale;
+    // Determine which pattern is active (interval > chord > scale priority)
+    const activePattern =
+      selectedInterval !== "None"
+        ? selectedInterval
+        : selectedChord !== "None"
+        ? selectedChord
+        : selectedScale;
 
     if (activePattern === "None") {
       return;
     }
 
-    const rootIndex = PITCH_CLASSES.indexOf(rootNote as unknown);
+    const rootIndex = getPitchClassIndex(rootNote);
     if (rootIndex === -1) return;
 
     const intervals = PATTERNS[activePattern] || [];
@@ -230,7 +241,7 @@ const Keyboard = () => {
     });
 
     // For scales, add the root note one octave higher
-    if (PATTERN_GROUPS[0].options.some(opt => opt.value === activePattern)) {
+    if (PATTERN_GROUPS[0].options.some((opt) => opt.value === activePattern)) {
       const highRootOctave = startOctave + 1;
       if (highRootOctave >= 2 && highRootOctave <= 6) {
         if (highRootOctave < 6 || rootNote === "C") {
@@ -240,10 +251,15 @@ const Keyboard = () => {
     }
 
     setMarkedKeys(newMarkedKeys);
-  }, [selectedScale, selectedChord, rootNote]);
+  }, [selectedScale, selectedChord, selectedInterval, rootNote]);
 
   const playMarkedKeys = useCallback(() => {
     if (markedKeys.size === 0) return;
+
+    // Resume audio context if suspended (required by browser autoplay policies)
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
 
     if (isArpeggiate) {
       // Sort keys by frequency (lowest to highest)
@@ -381,13 +397,34 @@ const Keyboard = () => {
           </select>
         </label>
         <label>
+          Interval:
+          <select
+            value={selectedInterval}
+            onChange={(e) => {
+              setSelectedInterval(e.target.value);
+              if (e.target.value !== "None") {
+                setSelectedScale("None");
+                setSelectedChord("None");
+              }
+            }}
+          >
+            <option value="None">None</option>
+            {PATTERN_GROUPS[2].options.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           Chord:
           <select
             value={selectedChord}
             onChange={(e) => {
               setSelectedChord(e.target.value);
               if (e.target.value !== "None") {
-                setSelectedScale("None"); // Clear scale when chord is selected
+                setSelectedScale("None");
+                setSelectedInterval("None");
               }
             }}
           >
@@ -406,7 +443,8 @@ const Keyboard = () => {
             onChange={(e) => {
               setSelectedScale(e.target.value);
               if (e.target.value !== "None") {
-                setSelectedChord("None"); // Clear chord when scale is selected
+                setSelectedChord("None");
+                setSelectedInterval("None");
               }
             }}
           >
@@ -422,7 +460,13 @@ const Keyboard = () => {
       <div className="keyboard-wrapper">
         <PatternBar
           rootNote={rootNote}
-          pattern={selectedChord !== "None" ? selectedChord : selectedScale}
+          pattern={
+            selectedInterval !== "None"
+              ? selectedInterval
+              : selectedChord !== "None"
+              ? selectedChord
+              : selectedScale
+          }
           octaveStart={2}
           octaveEnd={6}
         />

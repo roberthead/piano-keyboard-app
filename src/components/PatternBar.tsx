@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PATTERNS } from "../constants/musicPatterns";
-import { PITCH_CLASSES } from "../constants/pitchClasses";
+import { PITCH_CLASSES, getPitchClassIndex } from "../constants/pitchClasses";
 import "./PatternBar.css";
 
 interface PatternBarProps {
@@ -19,7 +19,7 @@ const PatternBar = ({
   const patternNotes = useMemo(() => {
     if (!rootNote || pattern === "None") return new Set<string>();
 
-    const rootIndex = PITCH_CLASSES.indexOf(rootNote as unknown);
+    const rootIndex = getPitchClassIndex(rootNote);
     if (rootIndex === -1) return new Set<string>();
 
     const intervals = PATTERNS[pattern] || [];
